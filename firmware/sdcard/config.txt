@@ -1,0 +1,8 @@
+# Hours between screen updates (1–18; the RTC cannot sleep longer)
+interval=7
+
+# A file in quotes/, or * for every .txt in that folder
+deck=*.txt
+
+# sequential or random
+order=random
