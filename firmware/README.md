@@ -36,9 +36,27 @@ order=sequential
 
 ### Quote files
 
-One quote per line. Blank lines and `#` comments are skipped. Optional author after ` | `:
+One quote per line. Blank lines are skipped. An optional author follows ` | ` on the same line.
+
+The red header is the first non-blank line when that line starts with `#`:
+
+| File line | Red header |
+|-----------|------------|
+| `#Fun Facts` | `Fun Facts` |
+| `# Fun Facts` | `Fun Facts` |
+| `#Cat Facts!` | `Cat Facts!` |
+| *(no `#` title)* | filename without `.txt` |
+
+- Leading spaces before `#`, and spaces right after it, are removed. Trailing spaces are removed.
+- A `#` with no text after it is not a title, so the filename is used.
+- Only that first title line is the header. Later `#` lines are comments and are skipped. The title line itself is never shown as a quote.
+- With `deck=*`, each quote uses the title from the file it came from.
+
+The title is the red line. The quote is black FreeSerif, and wraps to at most four lines. Keep each quote to about **140 characters** (roughly **25 words**). Anything past the fourth line is cut off, and one very long word can take a whole line. An author after ` | ` is drawn in black under the quote, so it uses one of those four lines.
 
 ```text
+#Stoic Quotes
+# One quote per line. Optional author after " | "
 The only true wisdom is in knowing you know nothing. | Socrates
 We suffer more in imagination than in reality.
 ```
@@ -63,8 +81,17 @@ Burn fuses once after changing BOD / clock options (megaTinyCore / PlatformIO `f
 
 The fetch-and-display cycle runs when **either** the configured interval elapses **or** PB2 is pressed. Intermediate 32 s PIT ticks only accumulate time.
 
-1. Read battery (10 kΩ / 10 kΩ divider, internal 2.5 V ADC reference, then ADC off)
+1. Read the battery, or reuse the last percent (see below)
 2. At or below 5% (~3.50 V on the UI curve), paint “Battery Low / Please Charge” once and skip later refreshes until the cell is back to 15% (~3.60 V). Wakes in between only re-read the ADC.
-3. Power SD → read config + one quote → power SD off
+3. Power SD → read config + one quote → power SD off. If the card does not answer, paint “No SD card detected” once and leave that image up until a quote loads. Later wakes still try the card.
 4. Power panel → draw → SSD1680 deep sleep → cut panel rail
 5. `prepareForPowerDown()` then Power-Down until interval or button
+
+### Battery checks
+
+The sense divider is 100 kΩ / 100 kΩ, read against the internal 2.5 V ADC reference. Q3 and the ADC are turned off as soon as the conversion finishes. The cell voltage barely moves over a few intervals, so a healthy cell is measured once every **5** wakes (button or interval). The percent is kept in SRAM, which Power-Down retains, and that cached value is what the corner readout shows on the four wakes in between. Boot and reset always measure. A failed conversion is retried on the next wake.
+
+Two cases still measure every wake:
+
+- The low-battery warning is already on the glass, so plugging in a charger clears it on the next wake.
+- The last reading is still at or below 15% (~3.60 V), so the cutoff on the steep part of the curve is not missed.

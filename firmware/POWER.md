@@ -26,7 +26,7 @@ Reference: ATtiny3224/3226/3227 datasheet (sleep / RTC / BOD), SSD1680 datasheet
 | Q3 sense P-FET | Gate low (ON) | High-Z (R5 to V_Bat) | — | — | **Hardware residual:** PA5 ESD diode clamps gate ≈VDD+0.3 when V_Bat≳3.6 V |
 | SSD1680 / panel | SPI + update | Deep sleep then VCI cut | Internal booster while powered | BUSY falling (during update only) | Image retained with power off |
 | microSD | SPI | Rail off, CS/bus low | — | — | Shared SPI can back-power during opposite rail ON |
-| Battery divider | Q3 on briefly; ADC ref internal 2.5 V | Off (R3 holds PA4 at GND) | — | — | Midpoint is analog (~1.7–2.1 V) → PA4 input buffer disabled |
+| Battery divider | Q3 on briefly about once per 5 wakes (every wake at ≤15% or while the low warning is up); ADC ref internal 2.5 V | Off (R3 holds PA4 at GND) | — | — | Midpoint is analog (~1.7–2.1 V) → PA4 input buffer disabled |
 | TPS7A0533 LDO | Always on | Always on | — | — | Always-on 3.3 V domain; not firmware-switched |
 | MCP73832 + STAT LED | USB charge only | Off when unplugged | — | — | Not in battery idle budget |
 

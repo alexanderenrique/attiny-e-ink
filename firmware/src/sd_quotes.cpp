@@ -11,17 +11,6 @@
 
 static SdFat sd;
 
-static bool endsWithTxt(const char* name) {
-  if (name == nullptr) {
-    return false;
-  }
-  const size_t n = strlen(name);
-  if (n < 4) {
-    return false;
-  }
-  return strcasecmp(name + (n - 4), ".txt") == 0;
-}
-
 static void deckLabelFromName(const char* name, char* out, size_t outCap) {
   if (out == nullptr || outCap == 0) {
     return;
@@ -89,6 +78,32 @@ static uint16_t countEligibleInFile(File32& f) {
   return scanner.eligible;
 }
 
+static void readDeckHeader(File32& f, char* out, size_t outCap) {
+  QuoteHeaderReader reader;
+  reader.begin(out, outCap);
+  char buf[64];
+  while (!reader.done) {
+    const int n = f.read(buf, sizeof(buf));
+    if (n <= 0) {
+      reader.feed(nullptr, 0, true);
+      break;
+    }
+    reader.feed(buf, static_cast<size_t>(n), false);
+  }
+  f.rewind();
+}
+
+// Red header: the file's first "# title" line, or the filename if it has none.
+static void fillDeckLabel(File32& f, const char* name, char* label, size_t labelCap) {
+  if (label == nullptr || labelCap == 0) {
+    return;
+  }
+  readDeckHeader(f, label, labelCap);
+  if (label[0] == '\0') {
+    deckLabelFromName(name, label, labelCap);
+  }
+}
+
 static bool pickLineInFile(File32& f, uint16_t index, char* out, size_t outCap) {
   QuoteLinePicker picker;
   picker.begin(index, out, outCap);
@@ -111,7 +126,7 @@ static bool isTxtFileName(File32& file, char* name, size_t nameCap) {
   if (!file.getName(name, nameCap)) {
     return false;
   }
-  return endsWithTxt(name);
+  return quoteDeckFileName(name);
 }
 
 static bool openQuotesDir(File32& dir) {
@@ -197,8 +212,8 @@ static bool pickFromAll(uint16_t index, char* out, size_t outCap, char* label,
     }
     const uint16_t count = countEligibleInFile(file);
     if (remaining < count) {
+      fillDeckLabel(file, name, label, labelCap);
       ok = pickLineInFile(file, remaining, out, outCap);
-      deckLabelFromName(name, label, labelCap);
       file.close();
       break;
     }
@@ -220,9 +235,9 @@ static uint16_t pickRandomIndex(uint16_t count, uint16_t seedMix) {
   return static_cast<uint16_t>(state % count);
 }
 
-bool sdLoadQuote(QuotePayload* out) {
+SdLoadStatus sdLoadQuote(QuotePayload* out) {
   if (out == nullptr) {
-    return false;
+    return SdLoadStatus::NoQuote;
   }
   out->ok = false;
   out->line[0] = '\0';
@@ -232,7 +247,7 @@ bool sdLoadQuote(QuotePayload* out) {
   if (!sd.begin(PIN_SD_CS, SD_SCK_MHZ(4))) {
     // Retry at a slower init clock.
     if (!sd.begin(PIN_SD_CS, SD_SCK_MHZ(1))) {
-      return false;
+      return SdLoadStatus::NoCard;
     }
   }
 
@@ -254,7 +269,7 @@ bool sdLoadQuote(QuotePayload* out) {
       sumDeckBytesAndCount(out->config.deck, &lineCount, resolvedName,
                            sizeof(resolvedName));
   if (lineCount == 0) {
-    return false;
+    return SdLoadStatus::NoQuote;
   }
 
   EepromQuoteState st;
@@ -293,12 +308,14 @@ bool sdLoadQuote(QuotePayload* out) {
     snprintf(path, sizeof(path), "quotes/%s", out->config.deck);
     File32 f = sd.open(path, O_RDONLY);
     if (f) {
+      fillDeckLabel(f, out->config.deck, out->deckLabel, sizeof(out->deckLabel));
       ok = pickLineInFile(f, index, out->line, sizeof(out->line));
       f.close();
+    } else {
+      deckLabelFromName(out->config.deck, out->deckLabel, sizeof(out->deckLabel));
     }
-    deckLabelFromName(out->config.deck, out->deckLabel, sizeof(out->deckLabel));
   }
 
   out->ok = ok;
-  return ok;
+  return ok ? SdLoadStatus::Ok : SdLoadStatus::NoQuote;
 }

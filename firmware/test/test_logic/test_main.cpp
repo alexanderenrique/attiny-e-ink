@@ -47,6 +47,18 @@ void test_config_ignores_comments_and_blank(void) {
   TEST_ASSERT_EQUAL_UINT16(7, cfg.intervalHours);
 }
 
+void test_quote_deck_file_name(void) {
+  TEST_ASSERT_TRUE(quoteDeckFileName("facts.txt"));
+  TEST_ASSERT_TRUE(quoteDeckFileName("Facts.TXT"));
+  TEST_ASSERT_FALSE(quoteDeckFileName("._facts.txt"));
+  TEST_ASSERT_FALSE(quoteDeckFileName(".facts.txt"));
+  TEST_ASSERT_FALSE(quoteDeckFileName(".DS_Store"));
+  TEST_ASSERT_FALSE(quoteDeckFileName("facts.txt.bak"));
+  TEST_ASSERT_FALSE(quoteDeckFileName(".txt"));
+  TEST_ASSERT_FALSE(quoteDeckFileName(""));
+  TEST_ASSERT_FALSE(quoteDeckFileName(nullptr));
+}
+
 void test_quote_line_skippable(void) {
   TEST_ASSERT_TRUE(quoteLineIsSkippable(""));
   TEST_ASSERT_TRUE(quoteLineIsSkippable("   "));
@@ -152,12 +164,134 @@ void test_battery_curve_ui_estimate(void) {
   TEST_ASSERT_TRUE(batteryPercentFromMillivolts(3600) >= BATTERY_RESUME_PERCENT);
 }
 
+void test_battery_samples_every_five_when_healthy(void) {
+  uint8_t wakes = 0;
+  int last = -1;
+  int samples = 0;
+  bool sampledAt[15] = {};
+
+  for (int i = 0; i < 15; ++i) {
+    if (batteryScheduleSample(&wakes, last, false)) {
+      sampledAt[i] = true;
+      samples++;
+      last = 80;
+      batteryCommitSample(&wakes);
+    }
+  }
+
+  TEST_ASSERT_EQUAL_INT(3, samples);
+  TEST_ASSERT_TRUE(sampledAt[0]);
+  TEST_ASSERT_TRUE(sampledAt[5]);
+  TEST_ASSERT_TRUE(sampledAt[10]);
+  TEST_ASSERT_FALSE(sampledAt[4]);
+  TEST_ASSERT_FALSE(sampledAt[9]);
+}
+
+void test_battery_samples_every_wake_near_empty_or_warning(void) {
+  uint8_t wakes = 0;
+  int samples = 0;
+  for (int i = 0; i < 5; ++i) {
+    if (batteryScheduleSample(&wakes, 10, false)) {
+      samples++;
+      batteryCommitSample(&wakes);
+    }
+  }
+  TEST_ASSERT_EQUAL_INT(5, samples);
+
+  wakes = 3;
+  samples = 0;
+  for (int i = 0; i < 4; ++i) {
+    if (batteryScheduleSample(&wakes, 80, true)) {
+      samples++;
+      batteryCommitSample(&wakes);
+    }
+  }
+  TEST_ASSERT_EQUAL_INT(4, samples);
+}
+
+void test_battery_retries_when_sample_is_not_committed(void) {
+  uint8_t wakes = 4;
+  TEST_ASSERT_TRUE(batteryScheduleSample(&wakes, 40, false));
+  TEST_ASSERT_EQUAL_UINT8(4, wakes);
+  TEST_ASSERT_TRUE(batteryScheduleSample(&wakes, 40, false));
+  batteryCommitSample(&wakes);
+  TEST_ASSERT_EQUAL_UINT8(0, wakes);
+  TEST_ASSERT_FALSE(batteryScheduleSample(&wakes, 40, false));
+}
+
 void test_pit_wakes_for_seconds(void) {
   TEST_ASSERT_EQUAL_UINT32(1, pitWakesForSeconds(0));
   TEST_ASSERT_EQUAL_UINT32(1, pitWakesForSeconds(1));
   TEST_ASSERT_EQUAL_UINT32(1, pitWakesForSeconds(32));
   TEST_ASSERT_EQUAL_UINT32(2, pitWakesForSeconds(33));
   TEST_ASSERT_EQUAL_UINT32(788, pitWakesForHours(7));
+}
+
+void test_header_reader_hash_titles(void) {
+  char out[64];
+  QuoteHeaderReader reader;
+
+  const char* fun = "#Fun Facts\nHoney never spoils.\n";
+  reader.begin(out, sizeof(out));
+  reader.feed(fun, strlen(fun), true);
+  TEST_ASSERT_TRUE(reader.done);
+  TEST_ASSERT_TRUE(reader.found);
+  TEST_ASSERT_EQUAL_STRING("Fun Facts", out);
+
+  const char* cats = "# Cat Facts!\r\nnext\n";
+  reader.begin(out, sizeof(out));
+  reader.feed(cats, strlen(cats), true);
+  TEST_ASSERT_EQUAL_STRING("Cat Facts!", out);
+
+  const char* spaced = "\n  #  Stoic Quotes  \nThe only true wisdom.\n";
+  reader.begin(out, sizeof(out));
+  reader.feed(spaced, strlen(spaced), true);
+  TEST_ASSERT_EQUAL_STRING("Stoic Quotes", out);
+
+  const char* eof = "#Fun Facts";
+  reader.begin(out, sizeof(out));
+  reader.feed(eof, strlen(eof), true);
+  TEST_ASSERT_TRUE(reader.found);
+  TEST_ASSERT_EQUAL_STRING("Fun Facts", out);
+}
+
+void test_header_reader_absent(void) {
+  char out[64];
+  QuoteHeaderReader reader;
+
+  const char* quote = "Just a quote\nSecond\n";
+  reader.begin(out, sizeof(out));
+  reader.feed(quote, strlen(quote), true);
+  TEST_ASSERT_TRUE(reader.done);
+  TEST_ASSERT_FALSE(reader.found);
+  TEST_ASSERT_EQUAL_STRING("", out);
+
+  const char* emptyHash = "#\nquote\n";
+  reader.begin(out, sizeof(out));
+  reader.feed(emptyHash, strlen(emptyHash), true);
+  TEST_ASSERT_FALSE(reader.found);
+
+  const char* blankHash = "#   \nquote\n";
+  reader.begin(out, sizeof(out));
+  reader.feed(blankHash, strlen(blankHash), true);
+  TEST_ASSERT_FALSE(reader.found);
+}
+
+void test_header_reader_chunked_and_ignores_later_comments(void) {
+  char out[64];
+  QuoteHeaderReader reader;
+  reader.begin(out, sizeof(out));
+  const char* a = "#Quo";
+  const char* b = "tes from the leadership book \"The Servant\"\n";
+  const char* c = "# not a header\nListening is a skill.\n";
+  reader.feed(a, strlen(a), false);
+  TEST_ASSERT_FALSE(reader.done);
+  reader.feed(b, strlen(b), false);
+  TEST_ASSERT_TRUE(reader.found);
+  TEST_ASSERT_EQUAL_STRING("Quotes from the leadership book \"The Servant\"", out);
+
+  reader.feed(c, strlen(c), true);
+  TEST_ASSERT_EQUAL_STRING("Quotes from the leadership book \"The Servant\"", out);
 }
 
 void test_line_picker_chunked(void) {
@@ -180,15 +314,22 @@ int main(void) {
   RUN_TEST(test_config_defaults_and_interval);
   RUN_TEST(test_config_order_and_deck);
   RUN_TEST(test_config_ignores_comments_and_blank);
+  RUN_TEST(test_quote_deck_file_name);
   RUN_TEST(test_quote_line_skippable);
   RUN_TEST(test_quote_split_author);
   RUN_TEST(test_sequential_wrap);
   RUN_TEST(test_battery_curve_endpoints);
   RUN_TEST(test_battery_curve_ui_estimate);
+  RUN_TEST(test_battery_samples_every_five_when_healthy);
+  RUN_TEST(test_battery_samples_every_wake_near_empty_or_warning);
+  RUN_TEST(test_battery_retries_when_sample_is_not_committed);
   RUN_TEST(test_pit_wakes_for_seconds);
   RUN_TEST(test_line_scanner_counts_eligible);
   RUN_TEST(test_line_scanner_crlf);
   RUN_TEST(test_line_picker_nth);
   RUN_TEST(test_line_picker_chunked);
+  RUN_TEST(test_header_reader_hash_titles);
+  RUN_TEST(test_header_reader_absent);
+  RUN_TEST(test_header_reader_chunked_and_ignores_later_comments);
   return UNITY_END();
 }

@@ -21,6 +21,11 @@ static uint16_t g_intervalHours = 7;
 static SystemState g_state = SystemState::Boot;
 // Survives Power-Down (SRAM retained). Set once the warning is on the glass.
 static bool g_batteryLow = false;
+// Same retention. Set once "No SD card detected" is on the glass.
+static bool g_noSdShown = false;
+// Last divider reading, and how many wakes have reused it. SRAM retained.
+static int g_batteryPct = -1;
+static uint8_t g_wakesSinceBatterySample = 0;
 
 static void panelPowerUp() {
   g_state = SystemState::EpdPoweringUp;
@@ -35,10 +40,22 @@ static void panelPowerDown() {
   epdPowerOff();
 }
 
+static int batteryPercentThisWake() {
+  if (batteryScheduleSample(&g_wakesSinceBatterySample, g_batteryPct,
+                            g_batteryLow)) {
+    const int pct = batteryReadPercent();
+    if (pct >= 0) {
+      g_batteryPct = pct;
+      batteryCommitSample(&g_wakesSinceBatterySample);
+    }
+  }
+  return g_batteryPct;
+}
+
 static void runUpdateCycle() {
   g_state = SystemState::Active;
 
-  const int batteryPct = batteryReadPercent();
+  const int batteryPct = batteryPercentThisWake();
 
   if (batteryPct >= BATTERY_RESUME_PERCENT) {
     g_batteryLow = false;
@@ -51,6 +68,7 @@ static void runUpdateCycle() {
       displayShowLowBattery(batteryPct);
       panelPowerDown();
       g_batteryLow = true;
+      g_noSdShown = false;
     }
     g_state = SystemState::SleepPrepare;
     return;
@@ -61,15 +79,30 @@ static void runUpdateCycle() {
 
   sdPowerOn();
   spiBeginBus();
-  const bool loaded = sdLoadQuote(&payload);
+  const SdLoadStatus loaded = sdLoadQuote(&payload);
   spiEndBus();
   sdPowerOff();
 
-  if (!loaded || !payload.ok) {
-    // Leave the previous image on the glass; prepare for sleep.
+  if (loaded == SdLoadStatus::NoCard) {
+    // One notice, then leave the glass alone until a quote actually loads.
+    // Later wakes still try the card; they just skip the refresh.
+    if (!g_noSdShown) {
+      panelPowerUp();
+      displayShowNoSdCard(batteryPct);
+      panelPowerDown();
+      g_noSdShown = true;
+    }
     g_state = SystemState::SleepPrepare;
     return;
   }
+
+  if (loaded != SdLoadStatus::Ok || !payload.ok) {
+    // Card answered, but there was nothing to show. Leave the previous image.
+    g_state = SystemState::SleepPrepare;
+    return;
+  }
+
+  g_noSdShown = false;
 
   g_intervalHours = payload.config.intervalHours;
   if (g_intervalHours == 0) {

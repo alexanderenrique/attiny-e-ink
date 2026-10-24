@@ -2,7 +2,6 @@
 
 #include <Arduino.h>
 #include <SPI.h>
-#include <avr/pgmspace.h>
 #include <string.h>
 
 #include "font.h"
@@ -132,11 +131,22 @@ static void epdDeepSleep() {
 // Text layout (landscape coordinates)
 // ---------------------------------------------------------------------------
 
-static constexpr uint8_t MAX_LINES = 8;
+static constexpr uint16_t TEXT_TOP = 4;
 static constexpr uint16_t MARGIN_X = 8;
-static constexpr uint16_t MARGIN_Y = 4;
-static constexpr uint16_t LINE_GAP = 2;
+// Bold header plus four regular body lines at the serif baseline pitch.
+static constexpr uint8_t MAX_LINES = static_cast<uint8_t>(
+    (EPD_HEIGHT - TEXT_TOP - FONT_ASCENT - FONT_DESCENT) / FONT_Y_ADVANCE + 1);
+static_assert(MAX_LINES == 5, "expected a red header and four body lines");
 static constexpr uint16_t MAX_TEXT_WIDTH = EPD_WIDTH - 2 * MARGIN_X;
+
+static const GfxFont* lineFont(bool red) {
+  return red ? &FONT_SERIF_BOLD : &FONT_SERIF;
+}
+
+static int16_t lineBaseline(uint8_t index) {
+  return static_cast<int16_t>(TEXT_TOP + FONT_ASCENT +
+                              static_cast<uint16_t>(index) * FONT_Y_ADVANCE);
+}
 
 struct LaidOutLine {
   const char* start;
@@ -149,10 +159,11 @@ struct Layout {
   uint8_t count = 0;
   char batteryText[8] = "";
   bool hasBattery = false;
+  int16_t batteryX = 0;
 };
 
-static uint16_t textWidth(const char* s, uint8_t len) {
-  return static_cast<uint16_t>(len) * FONT_WIDTH;
+static uint16_t textWidth(const GfxFont* font, const char* s, uint8_t len) {
+  return fontTextWidth(font, s, len);
 }
 
 static void appendLine(Layout* layout, const char* start, uint8_t len, bool red) {
@@ -171,6 +182,7 @@ static void wrapText(Layout* layout, const char* text, bool red) {
     return;
   }
 
+  const GfxFont* font = lineFont(red);
   const char* p = text;
   while (*p && layout->count < MAX_LINES) {
     // Skip leading spaces on a new visual line.
@@ -191,7 +203,8 @@ static void wrapText(Layout* layout, const char* text, bool red) {
         lastBreak = p;
         lastBreakLen = len;
       }
-      const uint16_t nextW = textWidth(lineStart, static_cast<uint8_t>(len + 1));
+      const uint16_t nextW =
+          textWidth(font, lineStart, static_cast<uint8_t>(len + 1));
       if (nextW > MAX_TEXT_WIDTH) {
         break;
       }
@@ -228,6 +241,7 @@ static void buildLayout(Layout* layout, const DisplayQuote& q) {
   layout->count = 0;
   layout->hasBattery = false;
   layout->batteryText[0] = '\0';
+  layout->batteryX = 0;
 
   if (q.deckLabel != nullptr && q.deckLabel[0] != '\0') {
     wrapText(layout, q.deckLabel, true);
@@ -253,17 +267,13 @@ static void buildLayout(Layout* layout, const DisplayQuote& q) {
   if (q.batteryPercent >= 0 && q.batteryPercent <= 100) {
     snprintf(layout->batteryText, sizeof(layout->batteryText), "%d%%",
              q.batteryPercent);
+    const uint16_t bw = fontTextWidth(
+        &FONT_SERIF_BOLD, layout->batteryText,
+        static_cast<uint8_t>(strlen(layout->batteryText)));
+    layout->batteryX =
+        static_cast<int16_t>(EPD_WIDTH - MARGIN_X - static_cast<int16_t>(bw));
     layout->hasBattery = true;
   }
-}
-
-static bool glyphPixel(char c, int gx, int gy) {
-  if (gx < 0 || gx >= FONT_WIDTH || gy < 0 || gy >= FONT_HEIGHT) {
-    return false;
-  }
-  const uint8_t* col = fontGlyph(c);
-  const uint8_t bits = pgm_read_byte(&col[gx]);
-  return (bits & (1u << gy)) != 0;
 }
 
 static bool layoutPixel(const Layout* layout, int16_t lx, int16_t ly,
@@ -274,39 +284,31 @@ static bool layoutPixel(const Layout* layout, int16_t lx, int16_t ly,
     return false;
   }
 
-  // Battery percentage, top-right, red.
+  // Battery percentage, top-right, same bold face and baseline as the header.
   if (layout->hasBattery) {
-    const uint8_t blen = static_cast<uint8_t>(strlen(layout->batteryText));
-    const int16_t bx =
-        static_cast<int16_t>(EPD_WIDTH - MARGIN_X - blen * FONT_WIDTH);
-    const int16_t by = static_cast<int16_t>(MARGIN_Y);
-    if (lx >= bx && ly >= by && ly < by + FONT_HEIGHT) {
-      const int16_t rel = lx - bx;
-      const char ch = layout->batteryText[rel / FONT_WIDTH];
-      if (glyphPixel(ch, rel % FONT_WIDTH, ly - by)) {
+    const int16_t baseline = lineBaseline(0);
+    if (ly >= baseline - FONT_ASCENT && ly < baseline + FONT_DESCENT &&
+        lx + 1 >= layout->batteryX) {
+      const uint8_t blen = static_cast<uint8_t>(strlen(layout->batteryText));
+      if (fontTextPixel(&FONT_SERIF_BOLD, layout->batteryText, blen,
+                        layout->batteryX, baseline, lx, ly)) {
         *redOut = true;
         return true;
       }
     }
   }
 
-  const uint16_t lineHeight = FONT_HEIGHT + LINE_GAP;
   for (uint8_t i = 0; i < layout->count; ++i) {
-    const int16_t y0 =
-        static_cast<int16_t>(MARGIN_Y + static_cast<uint16_t>(i) * lineHeight);
-    if (ly < y0 || ly >= y0 + FONT_HEIGHT) {
+    const int16_t baseline = lineBaseline(i);
+    if (ly < baseline - FONT_ASCENT || ly >= baseline + FONT_DESCENT) {
       continue;
     }
     const LaidOutLine& line = layout->lines[i];
-    const int16_t x0 = static_cast<int16_t>(MARGIN_X);
-    const int16_t x1 =
-        static_cast<int16_t>(x0 + static_cast<int16_t>(line.len) * FONT_WIDTH);
-    if (lx < x0 || lx >= x1) {
+    if (lx < static_cast<int16_t>(MARGIN_X)) {
       continue;
     }
-    const int16_t rel = lx - x0;
-    const char ch = line.start[rel / FONT_WIDTH];
-    if (glyphPixel(ch, rel % FONT_WIDTH, ly - y0)) {
+    if (fontTextPixel(lineFont(line.red), line.start, line.len, MARGIN_X,
+                      baseline, lx, ly)) {
       *redOut = line.red;
       return true;
     }
@@ -381,6 +383,15 @@ bool displayShowLowBattery(int batteryPercent) {
   DisplayQuote q;
   q.deckLabel = "Battery Low";
   q.quote = "Please Charge";
+  q.author = nullptr;
+  q.batteryPercent = batteryPercent;
+  return displayShowQuote(q);
+}
+
+bool displayShowNoSdCard(int batteryPercent) {
+  DisplayQuote q;
+  q.deckLabel = "No SD card detected";
+  q.quote = nullptr;
   q.author = nullptr;
   q.batteryPercent = batteryPercent;
   return displayShowQuote(q);

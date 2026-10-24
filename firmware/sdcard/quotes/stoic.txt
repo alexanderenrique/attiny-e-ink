@@ -1,3 +1,4 @@
+#Stoic Quotes
 # One quote per line. Optional author after " | "
 The only true wisdom is in knowing you know nothing. | Socrates
 We suffer more in imagination than in reality. | Seneca

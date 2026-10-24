@@ -9,6 +9,8 @@
 static constexpr size_t QUOTE_LINE_MAX = 240;
 
 // True if a line (without trailing newline) is a blank or a # comment.
+// A deck's first # line is the red title; later # lines are comments.
+// Both are skipped as quotes.
 inline bool quoteLineIsSkippable(const char* line) {
   if (line == nullptr) {
     return true;
@@ -17,6 +19,23 @@ inline bool quoteLineIsSkippable(const char* line) {
     ++line;
   }
   return *line == '\0' || *line == '#';
+}
+
+// True for a deck file in quotes/. Names starting with '.' are hidden files,
+// including Mac AppleDouble sidecars such as ._facts.txt on a FAT card.
+inline bool quoteDeckFileName(const char* name) {
+  if (name == nullptr || name[0] == '\0' || name[0] == '.') {
+    return false;
+  }
+  const size_t n = strlen(name);
+  if (n < 5) {
+    return false;
+  }
+  const char* ext = name + (n - 4);
+  const char t0 = ext[1] >= 'A' && ext[1] <= 'Z' ? ext[1] - 'A' + 'a' : ext[1];
+  const char t1 = ext[2] >= 'A' && ext[2] <= 'Z' ? ext[2] - 'A' + 'a' : ext[2];
+  const char t2 = ext[3] >= 'A' && ext[3] <= 'Z' ? ext[3] - 'A' + 'a' : ext[3];
+  return ext[0] == '.' && t0 == 't' && t1 == 'x' && t2 == 't';
 }
 
 // Split "quote text | Author" on the first " | " marker.
@@ -225,6 +244,101 @@ struct QuoteLinePicker {
           done = true;
           return true;
         }
+      }
+    }
+    return done;
+  }
+};
+
+// Capture the deck title from the first non-blank line when it starts with '#'.
+// "#Fun Facts" and "# Fun Facts" both yield "Fun Facts". A first line that does
+// not start with '#' means the file has no title. Stops after that line.
+struct QuoteHeaderReader {
+  char* out = nullptr;
+  size_t outCap = 0;
+  size_t outLen = 0;
+  bool done = false;
+  bool found = false;
+  bool skippingBlank = true;
+  bool inHeader = false;
+  bool skippingHashWs = false;
+
+  void begin(char* buffer, size_t cap) {
+    out = buffer;
+    outCap = cap;
+    outLen = 0;
+    done = false;
+    found = false;
+    skippingBlank = true;
+    inHeader = false;
+    skippingHashWs = false;
+    if (out != nullptr && outCap > 0) {
+      out[0] = '\0';
+    }
+  }
+
+  void finishHeader() {
+    while (outLen > 0 && (out[outLen - 1] == ' ' || out[outLen - 1] == '\t')) {
+      --outLen;
+    }
+    if (out != nullptr && outCap > 0) {
+      out[outLen < outCap ? outLen : outCap - 1] = '\0';
+    }
+    found = outLen > 0;
+    done = true;
+    inHeader = false;
+  }
+
+  bool feed(const char* data, size_t len, bool finish) {
+    if (done || out == nullptr || outCap == 0) {
+      return done;
+    }
+
+    for (size_t i = 0; i < len; ++i) {
+      const char c = data[i];
+      if (c == '\r') {
+        continue;
+      }
+      if (skippingBlank) {
+        if (c == ' ' || c == '\t' || c == '\n') {
+          continue;
+        }
+        skippingBlank = false;
+        if (c == '#') {
+          inHeader = true;
+          skippingHashWs = true;
+          continue;
+        }
+        done = true;
+        found = false;
+        out[0] = '\0';
+        return true;
+      }
+      if (!inHeader) {
+        continue;
+      }
+      if (c == '\n') {
+        finishHeader();
+        return true;
+      }
+      if (skippingHashWs) {
+        if (c == ' ' || c == '\t') {
+          continue;
+        }
+        skippingHashWs = false;
+      }
+      if (outLen + 1 < outCap) {
+        out[outLen++] = c;
+      }
+    }
+
+    if (finish && !done) {
+      if (inHeader) {
+        finishHeader();
+      } else {
+        done = true;
+        found = false;
+        out[0] = '\0';
       }
     }
     return done;
