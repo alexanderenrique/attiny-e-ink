@@ -4,6 +4,8 @@
 
 #include "battery.h"
 #include "config_parse.h"
+#include "display_raster.h"
+#include "font.h"
 #include "pit_interval.h"
 #include "quote_select.h"
 
@@ -309,6 +311,124 @@ void test_line_picker_chunked(void) {
   TEST_ASSERT_EQUAL_STRING("Hello world", out);
 }
 
+static void assertGlyphFitsMetrics(const GfxFont* font) {
+  TEST_ASSERT_NOT_NULL(font);
+  for (uint16_t ch = font->first; ch <= font->last; ++ch) {
+    GfxGlyph glyph;
+    memcpy(&glyph, &font->glyphs[ch - font->first], sizeof(glyph));
+    TEST_ASSERT_TRUE(glyph.xOffset >= 0);
+    const int overhang =
+        static_cast<int>(glyph.xOffset) + static_cast<int>(glyph.width) -
+        static_cast<int>(glyph.xAdvance);
+    TEST_ASSERT_TRUE(overhang <= FONT_RIGHT_OVERHANG);
+    TEST_ASSERT_TRUE(glyph.yOffset >= -static_cast<int>(FONT_ASCENT));
+    TEST_ASSERT_TRUE(static_cast<int>(glyph.yOffset) +
+                         static_cast<int>(glyph.height) <=
+                     static_cast<int>(FONT_DESCENT));
+  }
+}
+
+void test_font_glyphs_fit_line_metrics(void) {
+  assertGlyphFitsMetrics(&FONT_SERIF);
+  assertGlyphFitsMetrics(&FONT_SERIF_BOLD);
+}
+
+static bool probeSpans(const RasterSpan* spans, uint8_t count, int16_t x,
+                       int16_t y, bool* red) {
+  for (uint8_t i = 0; i < count; ++i) {
+    const RasterSpan& span = spans[i];
+    if (fontTextPixel(span.font, span.text, span.len, span.originX,
+                      span.baseline, x, y)) {
+      *red = span.red;
+      return true;
+    }
+  }
+  return false;
+}
+
+static RasterSpan makeSpan(const GfxFont* font, const char* text, int16_t x,
+                           int16_t baseline, bool red) {
+  RasterSpan span;
+  span.font = font;
+  span.text = text;
+  span.len = static_cast<uint8_t>(strlen(text));
+  span.originX = x;
+  span.baseline = baseline;
+  span.advance = fontTextWidth(font, text, span.len);
+  span.red = red;
+  return span;
+}
+
+static void assertPagesMatchProbe(const RasterSpan* spans, uint8_t count) {
+  uint8_t black[EPD_PAGE_BYTES];
+  uint8_t red[EPD_PAGE_BYTES];
+  for (uint16_t ny = 0; ny < EPD_NATIVE_HEIGHT; ny += EPD_PAGE_ROWS) {
+    rasterFillPage(spans, count, ny, black, red);
+    for (uint8_t row = 0; row < EPD_PAGE_ROWS; ++row) {
+      const int16_t lx = static_cast<int16_t>(EPD_NATIVE_HEIGHT - 1 - (ny + row));
+      for (int16_t ly = 0; ly < static_cast<int16_t>(EPD_HEIGHT); ++ly) {
+        bool expectRed = false;
+        const bool on = probeSpans(spans, count, lx, ly, &expectRed);
+        const int got = static_cast<int>(rasterPageInk(black, red, ny, lx, ly));
+        if (!on) {
+          TEST_ASSERT_EQUAL_INT(static_cast<int>(RasterInk::White), got);
+        } else if (expectRed) {
+          TEST_ASSERT_EQUAL_INT(static_cast<int>(RasterInk::Red), got);
+        } else {
+          TEST_ASSERT_EQUAL_INT(static_cast<int>(RasterInk::Black), got);
+        }
+      }
+    }
+  }
+}
+
+void test_raster_address_matches_panel_rotation(void) {
+  uint16_t index = 0;
+  uint8_t mask = 0;
+
+  TEST_ASSERT_TRUE(rasterPageAddress(0, 295, 0, &index, &mask));
+  TEST_ASSERT_EQUAL_UINT16(0, index);
+  TEST_ASSERT_EQUAL_UINT8(0x80, mask);
+
+  TEST_ASSERT_TRUE(rasterPageAddress(0, 295, 7, &index, &mask));
+  TEST_ASSERT_EQUAL_UINT16(0, index);
+  TEST_ASSERT_EQUAL_UINT8(0x01, mask);
+
+  TEST_ASSERT_TRUE(rasterPageAddress(0, 288, 0, &index, &mask));
+  TEST_ASSERT_EQUAL_UINT16(7 * 16, index);
+  TEST_ASSERT_EQUAL_UINT8(0x80, mask);
+
+  TEST_ASSERT_FALSE(rasterPageAddress(0, 287, 0, &index, &mask));
+
+  TEST_ASSERT_TRUE(rasterPageAddress(288, 0, 127, &index, &mask));
+  TEST_ASSERT_EQUAL_UINT16(127, index);
+  TEST_ASSERT_EQUAL_UINT8(0x01, mask);
+}
+
+void test_raster_pages_match_pixel_probe(void) {
+  const RasterSpan quote[] = {
+      makeSpan(&FONT_SERIF_BOLD, "100%", 250, 16, true),
+      makeSpan(&FONT_SERIF_BOLD, "Fun Facts", 8, 16, true),
+      makeSpan(&FONT_SERIF, "A glyph can overhang, like g and {.", 8, 38, false),
+      makeSpan(&FONT_SERIF, "Right edge", 270, 60, false),
+  };
+  assertPagesMatchProbe(quote, 4);
+
+  const RasterSpan overlap[] = {
+      makeSpan(&FONT_SERIF_BOLD, "Ag{", 20, 40, true),
+      makeSpan(&FONT_SERIF, "Ag{", 20, 40, false),
+  };
+  assertPagesMatchProbe(overlap, 2);
+
+  uint8_t black[EPD_PAGE_BYTES];
+  uint8_t red[EPD_PAGE_BYTES];
+  rasterFillPage(nullptr, 0, 0, black, red);
+  for (uint16_t i = 0; i < EPD_PAGE_BYTES; ++i) {
+    TEST_ASSERT_EQUAL_UINT8(0xFF, black[i]);
+    TEST_ASSERT_EQUAL_UINT8(0x00, red[i]);
+  }
+}
+
 int main(void) {
   UNITY_BEGIN();
   RUN_TEST(test_config_defaults_and_interval);
@@ -331,5 +451,8 @@ int main(void) {
   RUN_TEST(test_header_reader_hash_titles);
   RUN_TEST(test_header_reader_absent);
   RUN_TEST(test_header_reader_chunked_and_ignores_later_comments);
+  RUN_TEST(test_font_glyphs_fit_line_metrics);
+  RUN_TEST(test_raster_address_matches_panel_rotation);
+  RUN_TEST(test_raster_pages_match_pixel_probe);
   return UNITY_END();
 }

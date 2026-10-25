@@ -62,3 +62,42 @@ bool fontTextPixel(const GfxFont* font, const char* s, uint8_t len,
   }
   return false;
 }
+
+void fontVisitInk(const GfxFont* font, const char* s, uint8_t len,
+                  int16_t originX, int16_t baseline, int16_t clipX0,
+                  int16_t clipX1, FontInkFn fn, void* ctx) {
+  if (font == nullptr || s == nullptr || len == 0 || fn == nullptr ||
+      clipX0 >= clipX1) {
+    return;
+  }
+
+  int16_t cursor = originX;
+  for (uint8_t i = 0; i < len; ++i) {
+    GfxGlyph g;
+    loadGlyph(font, s[i], &g);
+    const int16_t inkX0 = static_cast<int16_t>(cursor + g.xOffset);
+    // xOffset is never negative here, so later glyphs are further right.
+    if (inkX0 >= clipX1) {
+      break;
+    }
+    if (g.width > 0 && g.height > 0) {
+      const int16_t inkX1 = static_cast<int16_t>(inkX0 + g.width);
+      if (inkX1 > clipX0) {
+        const int16_t xx0 =
+            inkX0 < clipX0 ? static_cast<int16_t>(clipX0 - inkX0) : 0;
+        const int16_t xx1 = inkX1 > clipX1
+                                ? static_cast<int16_t>(clipX1 - inkX0)
+                                : static_cast<int16_t>(g.width);
+        for (int16_t yy = 0; yy < static_cast<int16_t>(g.height); ++yy) {
+          const int16_t py = static_cast<int16_t>(baseline + g.yOffset + yy);
+          for (int16_t xx = xx0; xx < xx1; ++xx) {
+            if (glyphPixel(font, &g, xx, yy)) {
+              fn(static_cast<int16_t>(inkX0 + xx), py, ctx);
+            }
+          }
+        }
+      }
+    }
+    cursor = static_cast<int16_t>(cursor + g.xAdvance);
+  }
+}

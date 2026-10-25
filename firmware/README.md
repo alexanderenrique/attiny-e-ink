@@ -87,6 +87,8 @@ The fetch-and-display cycle runs when **either** the configured interval elapses
 4. Power panel → draw → SSD1680 deep sleep → cut panel rail
 5. `prepareForPowerDown()` then Power-Down until interval or button
 
+The glass stays still until both SSD1680 planes are loaded. Each 8-row band is one slice of the landscape image: the line is walked once and only the glyphs in that slice are decoded into the black and red bytes. Probing every pixel from the start of the string took several seconds on the 10 MHz ATtiny before the waveform could start. The full red/black refresh itself is unchanged.
+
 ### Battery checks
 
 The sense divider is 100 kΩ / 100 kΩ, read against the internal 2.5 V ADC reference. Q3 and the ADC are turned off as soon as the conversion finishes. The cell voltage barely moves over a few intervals, so a healthy cell is measured once every **5** wakes (button or interval). The percent is kept in SRAM, which Power-Down retains, and that cached value is what the corner readout shows on the four wakes in between. Boot and reset always measure. A failed conversion is retried on the next wake.

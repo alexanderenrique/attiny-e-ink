@@ -31,8 +31,11 @@ CXX="${CXX:-c++}"
 CC="${CC:-cc}"
 "$CC" -std=c11 -Wall -Wextra -I"$UNITY_INC" -c "$UNITY_SRC" -o "$BUILD/unity.o"
 "$CXX" -std=c++17 -Wall -Wextra -DHOST_TEST=1 \
-  -I"$ROOT/include" -I"$UNITY_INC" \
+  -I"$ROOT/include" -I"$ROOT/test/host_include" -I"$UNITY_INC" \
   "$ROOT/test/test_logic/test_main.cpp" \
+  "$ROOT/src/font.cpp" \
+  "$ROOT/src/font_serif.cpp" \
+  "$ROOT/src/display_raster.cpp" \
   "$BUILD/unity.o" \
   -o "$BUILD/test_logic"
 "$BUILD/test_logic"

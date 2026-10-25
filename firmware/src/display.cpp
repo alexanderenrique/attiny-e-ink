@@ -4,6 +4,7 @@
 #include <SPI.h>
 #include <string.h>
 
+#include "display_raster.h"
 #include "font.h"
 #include "pins.h"
 #include "power.h"
@@ -279,107 +280,70 @@ static void buildLayout(Layout* layout, const DisplayQuote& q) {
   }
 }
 
-static bool layoutPixel(const Layout* layout, int16_t lx, int16_t ly,
-                        bool* redOut) {
-  *redOut = false;
-  if (lx < 0 || ly < 0 || lx >= static_cast<int16_t>(EPD_WIDTH) ||
-      ly >= static_cast<int16_t>(EPD_HEIGHT)) {
-    return false;
-  }
-
-  // Battery percentage, top-right, same bold face and baseline as the header.
-  if (layout->hasBattery) {
-    const int16_t baseline = lineBaseline(0);
-    if (ly >= baseline - FONT_ASCENT && ly < baseline + FONT_DESCENT &&
-        lx + 1 >= layout->batteryX) {
-      const uint8_t blen = static_cast<uint8_t>(strlen(layout->batteryText));
-      if (fontTextPixel(&FONT_SERIF_BOLD, layout->batteryText, blen,
-                        layout->batteryX, baseline, lx, ly)) {
-        *redOut = true;
-        return true;
-      }
-    }
-  }
-
-  for (uint8_t i = 0; i < layout->count; ++i) {
-    const int16_t baseline = lineBaseline(i);
-    if (ly < baseline - FONT_ASCENT || ly >= baseline + FONT_DESCENT) {
-      continue;
-    }
-    const LaidOutLine& line = layout->lines[i];
-    if (lx < static_cast<int16_t>(MARGIN_X)) {
-      continue;
-    }
-    if (fontTextPixel(lineFont(line.red), line.start, line.len, MARGIN_X,
-                      baseline, lx, ly)) {
-      *redOut = line.red;
-      return true;
-    }
-  }
-  return false;
-}
-
-static void streamPlane(const Layout* layout, bool redPlane) {
-  // Stream full native frame, 8 native rows at a time (128 bytes).
-  uint8_t page[128];
-
-  epdSetRamArea(0, 0, EPD_NATIVE_WIDTH, EPD_NATIVE_HEIGHT);
-  epdWriteCommand(redPlane ? 0x26 : 0x24);
-
+static void writeRamBand(uint8_t command, uint16_t nativeY, const uint8_t* bytes) {
+  epdSetRamArea(0, nativeY, EPD_NATIVE_WIDTH, EPD_PAGE_ROWS);
+  epdWriteCommand(command);
   digitalWrite(PIN_EPD_DC, HIGH);
   epdCs(true);
   SPI.beginTransaction(epdSpi);
-
-  for (uint16_t ny = 0; ny < EPD_NATIVE_HEIGHT; ny += 8) {
-    memset(page, 0xFF, sizeof(page));  // white
-
-    for (uint8_t row = 0; row < 8; ++row) {
-      const uint16_t y = static_cast<uint16_t>(ny + row);
-      if (y >= EPD_NATIVE_HEIGHT) {
-        break;
-      }
-      for (uint8_t xb = 0; xb < 16; ++xb) {
-        uint8_t byteVal = 0xFF;
-        for (uint8_t bit = 0; bit < 8; ++bit) {
-          const int16_t nx = static_cast<int16_t>(xb * 8 + bit);
-          const int16_t lx =
-              static_cast<int16_t>(EPD_NATIVE_HEIGHT - 1 - static_cast<int16_t>(y));
-          const int16_t ly = nx;
-          bool isRed = false;
-          const bool on = layoutPixel(layout, lx, ly, &isRed);
-          if (!on) {
-            continue;
-          }
-          if (redPlane) {
-            if (isRed) {
-              // Controller red RAM: 0 = red after GxEPD2 ~invert convention.
-              // We write inverted at the end of the byte assembly:
-              byteVal &= static_cast<uint8_t>(~(1u << (7 - bit)));
-            }
-          } else {
-            if (!isRed) {
-              byteVal &= static_cast<uint8_t>(~(1u << (7 - bit)));
-            }
-          }
-        }
-        // SSD1680: bit7 is leftmost pixel of the byte.
-        if (redPlane) {
-          // Match GxEPD2: store ~color where color bitmap 0=red → write 1.
-          // Our byteVal already has 0 where red. Invert for the red plane.
-          page[row * 16 + xb] = static_cast<uint8_t>(~byteVal);
-        } else {
-          page[row * 16 + xb] = byteVal;
-        }
-      }
-    }
-
-    for (uint16_t i = 0; i < sizeof(page); ++i) {
-      SPI.transfer(page[i]);
-    }
+  for (uint16_t i = 0; i < EPD_PAGE_BYTES; ++i) {
+    SPI.transfer(bytes[i]);
   }
-
   SPI.endTransaction();
   epdCs(false);
+}
+
+static uint8_t pushSpan(RasterSpan* spans, uint8_t count, const GfxFont* font,
+                        const char* text, int16_t originX, int16_t baseline,
+                        bool red) {
+  if (spans == nullptr || text == nullptr || text[0] == '\0' ||
+      count >= MAX_LINES + 1) {
+    return count;
+  }
+  const uint8_t len = static_cast<uint8_t>(strlen(text));
+  RasterSpan& span = spans[count];
+  span.font = font;
+  span.text = text;
+  span.len = len;
+  span.originX = originX;
+  span.baseline = baseline;
+  span.advance = fontTextWidth(font, text, len);
+  span.red = red;
+  return static_cast<uint8_t>(count + 1);
+}
+
+// Paint both RAM planes from glyphs. Each 8-row band is one landscape slice,
+// so a glyph's bitmap is decoded only in the slice it occupies.
+static void streamFrame(const Layout* layout) {
+  RasterSpan spans[MAX_LINES + 1];
+  uint8_t spanCount = 0;
+
+  // Battery is checked before the lines, so it covers the header on overlap.
+  if (layout->hasBattery) {
+    spanCount = pushSpan(spans, spanCount, &FONT_SERIF_BOLD, layout->batteryText,
+                         layout->batteryX, lineBaseline(0), true);
+  }
+  for (uint8_t i = 0; i < layout->count; ++i) {
+    const LaidOutLine& line = layout->lines[i];
+    // line.start points into a longer buffer; len bounds the run.
+    RasterSpan& span = spans[spanCount];
+    span.font = lineFont(line.red);
+    span.text = line.start;
+    span.len = line.len;
+    span.originX = static_cast<int16_t>(MARGIN_X);
+    span.baseline = lineBaseline(i);
+    span.advance = fontTextWidth(span.font, span.text, span.len);
+    span.red = line.red;
+    ++spanCount;
+  }
+
+  uint8_t black[EPD_PAGE_BYTES];
+  uint8_t red[EPD_PAGE_BYTES];
+  for (uint16_t ny = 0; ny < EPD_NATIVE_HEIGHT; ny += EPD_PAGE_ROWS) {
+    rasterFillPage(spans, spanCount, ny, black, red);
+    writeRamBand(0x24, ny, black);
+    writeRamBand(0x26, ny, red);
+  }
 }
 
 bool displayShowLowBattery(int batteryPercent) {
@@ -405,12 +369,7 @@ bool displayShowQuote(const DisplayQuote& q) {
   buildLayout(&layout, q);
 
   epdInit();
-
-  // Clear both planes white via streamPlane with empty layout first? The
-  // quote layout already draws on white background (0xFF defaults).
-  streamPlane(&layout, false);  // black
-  streamPlane(&layout, true);   // red
-
+  streamFrame(&layout);
   epdUpdateFull();
   epdDeepSleep();
   epdCutPowerAfterDeepSleep();
