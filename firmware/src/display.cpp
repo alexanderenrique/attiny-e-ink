@@ -12,6 +12,8 @@
 
 static constexpr uint16_t FULL_REFRESH_TIMEOUT_S = 32;
 static constexpr uint16_t SHORT_BUSY_TIMEOUT_S = 1;
+// BUSY can fall before the glass has settled. Q1 stays on through this.
+static constexpr uint32_t POST_BUSY_SETTLE_MS = 20000;
 
 static SPISettings epdSpi(4000000, MSBFIRST, SPI_MODE0);
 
@@ -112,6 +114,7 @@ static void epdUpdateFull() {
   epdWriteData(0xF7);
   epdWriteCommand(0x20);
   (void)epdWaitBusy(FULL_REFRESH_TIMEOUT_S);
+  delay(POST_BUSY_SETTLE_MS);
 }
 
 static void epdDeepSleep() {
