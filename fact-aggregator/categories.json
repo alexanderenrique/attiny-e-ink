@@ -1,0 +1,74 @@
+{
+  "categories": [
+    {
+      "slug": "animals",
+      "title": "Animal Facts",
+      "definition": "Facts about animals, their biology, behavior, and interactions with people."
+    },
+    {
+      "slug": "body_health",
+      "title": "Body and Health",
+      "definition": "Facts about human anatomy, health, medicine, and psychological processes."
+    },
+    {
+      "slug": "food",
+      "title": "Food Facts",
+      "definition": "Facts about food, ingredients, cooking, nutrition, and eating habits."
+    },
+    {
+      "slug": "history",
+      "title": "History Facts",
+      "definition": "Facts about past people, events, inventions, and historical practices."
+    },
+    {
+      "slug": "geography_places",
+      "title": "Places and Earth",
+      "definition": "Facts about countries, cities, landmarks, buildings, and Earth's physical features."
+    },
+    {
+      "slug": "space",
+      "title": "Space Facts",
+      "definition": "Facts about planets, stars, space exploration, and the universe."
+    },
+    {
+      "slug": "science_nature",
+      "title": "Science and Nature",
+      "definition": "Facts about scientific discoveries, math, chemistry, materials, weather, and natural phenomena."
+    },
+    {
+      "slug": "technology",
+      "title": "Technology Facts",
+      "definition": "Facts about computers, electronics, software, inventions, and engineered devices."
+    },
+    {
+      "slug": "transportation",
+      "title": "Transportation Facts",
+      "definition": "Facts about vehicles, travel, roads, and other ways people or goods are transported."
+    },
+    {
+      "slug": "language_culture",
+      "title": "Language and Culture",
+      "definition": "Facts about words, languages, customs, folklore, and cultural traditions."
+    },
+    {
+      "slug": "arts_entertainment",
+      "title": "Arts and Entertainment",
+      "definition": "Facts about music, television, film, books, games, and other creative entertainment."
+    },
+    {
+      "slug": "sports",
+      "title": "Sports Facts",
+      "definition": "Facts about sports, athletic competition, and sporting equipment."
+    },
+    {
+      "slug": "money_society",
+      "title": "Money and Society",
+      "definition": "Facts about finance, economics, laws, social systems, and public life."
+    },
+    {
+      "slug": "other",
+      "title": "Other",
+      "definition": "Facts that do not fit any of the categories above."
+    }
+  ]
+}

@@ -224,17 +224,6 @@ static bool pickFromAll(uint16_t index, char* out, size_t outCap, char* label,
   return ok;
 }
 
-static uint16_t pickRandomIndex(uint16_t count, uint16_t seedMix) {
-  if (count == 0) {
-    return 0;
-  }
-  // Seed from EEPROM progress — do not touch the ADC with the divider off.
-  static uint16_t state = 0xA5A5;
-  state ^= seedMix;
-  state = static_cast<uint16_t>(state * 251U + 13U);
-  return static_cast<uint16_t>(state % count);
-}
-
 SdLoadStatus sdLoadQuote(QuotePayload* out) {
   if (out == nullptr) {
     return SdLoadStatus::NoQuote;
@@ -281,14 +270,27 @@ SdLoadStatus sdLoadQuote(QuotePayload* out) {
     st.magic = EEPROM_QUOTE_MAGIC;
     st.fileSize = bytes;
     st.lineCount = lineCount;
-    st.nextIndex = 0;
+    QuoteShuffleState shuffle;
+    quoteShuffleBegin(&shuffle, lineCount, bytes);
+    st.nextIndex = shuffle.cursor;
+    st.shuffleStart = shuffle.start;
+    st.shuffleStride = shuffle.stride;
     strncpy(st.deckKey, out->config.deck, sizeof(st.deckKey) - 1);
     st.deckKey[sizeof(st.deckKey) - 1] = '\0';
   }
 
   uint16_t index = 0;
   if (out->config.order == QuoteOrder::Random) {
-    index = pickRandomIndex(lineCount, st.nextIndex ^ lineCount);
+    // One shuffled pass, remembered across sleep and reset. A bad stride
+    // (blank or corrupt EEPROM) starts a new pass inside quoteShuffleTake.
+    QuoteShuffleState shuffle;
+    shuffle.cursor = st.nextIndex;
+    shuffle.start = st.shuffleStart;
+    shuffle.stride = st.shuffleStride;
+    index = quoteShuffleTake(&shuffle, lineCount);
+    st.nextIndex = shuffle.cursor;
+    st.shuffleStart = shuffle.start;
+    st.shuffleStride = shuffle.stride;
   } else {
     uint16_t next = 0;
     index = quoteNextSequentialIndex(st.nextIndex, lineCount, &next);

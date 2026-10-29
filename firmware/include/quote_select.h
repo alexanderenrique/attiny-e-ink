@@ -78,6 +78,160 @@ inline uint16_t quoteNextSequentialIndex(uint16_t current, uint16_t count,
   return display;
 }
 
+// Greatest common divisor. Used to pick a shuffle stride coprime to the deck.
+inline uint16_t quoteGcd(uint16_t a, uint16_t b) {
+  while (b != 0) {
+    const uint16_t t = static_cast<uint16_t>(a % b);
+    a = b;
+    b = t;
+  }
+  return a;
+}
+
+// A stride in 1..count-1 that shares no factors with count. Walking
+// (start + i * stride) mod count then hits every index once.
+// preferred is reduced into range; 0 becomes 1. count <= 1 yields 1.
+// Stride 1 walks the file in order and count-1 walks it backwards. Those
+// are skipped when any other coprime step exists. Only decks of 1, 2, 3,
+// 4, or 6 lines have no other step that can reach every line.
+inline uint16_t quoteCoprimeStride(uint16_t count, uint16_t preferred) {
+  if (count <= 1) {
+    return 1;
+  }
+  uint16_t step = static_cast<uint16_t>(preferred % count);
+  if (step == 0) {
+    step = 1;
+  }
+  const uint16_t origin = step;
+  if (count > 4) {
+    for (uint16_t n = 0; n < count; ++n) {
+      if (step != 1 && static_cast<uint16_t>(step + 1U) != count &&
+          quoteGcd(step, count) == 1) {
+        return step;
+      }
+      step = static_cast<uint16_t>(step + 1U);
+      if (step >= count) {
+        step = 1;
+      }
+    }
+    step = origin;
+  }
+  for (uint16_t n = 0; n < count; ++n) {
+    if (quoteGcd(step, count) == 1) {
+      return step;
+    }
+    step = static_cast<uint16_t>(step + 1U);
+    if (step >= count) {
+      step = 1;
+    }
+  }
+  return 1;
+}
+
+inline bool quoteShuffleStrideOk(uint16_t stride, uint16_t count) {
+  if (count <= 1) {
+    return true;
+  }
+  return stride >= 1 && stride < count && quoteGcd(stride, count) == 1;
+}
+
+// Cursor for one shuffled pass. cursor runs 0..count-1, then a new start
+// and stride are chosen so the next pass is a different order.
+struct QuoteShuffleState {
+  uint16_t cursor = 0;
+  uint16_t start = 0;
+  uint16_t stride = 1;
+};
+
+inline uint16_t quoteShuffleIndex(uint16_t start, uint16_t cursor, uint16_t stride,
+                                  uint16_t count) {
+  if (count == 0) {
+    return 0;
+  }
+  const uint32_t sum = static_cast<uint32_t>(start % count) +
+                       static_cast<uint32_t>(cursor % count) *
+                           static_cast<uint32_t>(stride % count);
+  return static_cast<uint16_t>(sum % count);
+}
+
+// Start a pass. mix (the deck's byte size) only chooses the first order.
+// The same mix always yields the same first pass; later passes call rekey.
+inline void quoteShuffleBegin(QuoteShuffleState* s, uint16_t count, uint32_t mix) {
+  if (s == nullptr) {
+    return;
+  }
+  s->cursor = 0;
+  if (count <= 1) {
+    s->start = 0;
+    s->stride = 1;
+    return;
+  }
+  s->start = static_cast<uint16_t>(mix % count);
+  const uint32_t pref = mix * 0x9E3779B9UL + 0x517CC1B7UL;
+  uint16_t preferred = static_cast<uint16_t>(pref % count);
+  if (preferred == 0) {
+    preferred = 1;
+  }
+  s->stride = quoteCoprimeStride(count, preferred);
+}
+
+// New permutation for the next lap. For count > 2 the stride changes, so the
+// relative order is not a rotation of the previous pass. count == 2 has only
+// one legal stride, and the start flips instead.
+inline void quoteShuffleRekey(QuoteShuffleState* s, uint16_t count) {
+  if (s == nullptr) {
+    return;
+  }
+  if (count <= 1) {
+    s->cursor = 0;
+    s->start = 0;
+    s->stride = 1;
+    return;
+  }
+  const uint16_t oldStart = static_cast<uint16_t>(s->start % count);
+  const uint16_t oldStride = s->stride;
+  uint16_t stride = oldStride;
+  for (uint16_t bump = 1; bump < count; ++bump) {
+    const uint16_t preferred = static_cast<uint16_t>((oldStride + bump) % count);
+    if (preferred == 0) {
+      continue;
+    }
+    stride = quoteCoprimeStride(count, preferred);
+    if (stride != oldStride) {
+      break;
+    }
+  }
+  s->start = static_cast<uint16_t>((oldStart + 1U) % count);
+  s->stride = stride;
+  s->cursor = 0;
+}
+
+// Index to show now. Advances the cursor and rekeys when the pass ends.
+// A stride that cannot cover the deck starts a fresh pass first.
+inline uint16_t quoteShuffleTake(QuoteShuffleState* s, uint16_t count) {
+  if (s == nullptr || count == 0) {
+    return 0;
+  }
+  if (count == 1) {
+    s->cursor = 0;
+    s->start = 0;
+    s->stride = 1;
+    return 0;
+  }
+  if (!quoteShuffleStrideOk(s->stride, count) || s->start >= count) {
+    quoteShuffleBegin(s, count, 0xA5A5U);
+  }
+  if (s->cursor >= count) {
+    s->cursor = 0;
+  }
+  const uint16_t index = quoteShuffleIndex(s->start, s->cursor, s->stride, count);
+  s->cursor = static_cast<uint16_t>(s->cursor + 1U);
+  if (s->cursor >= count) {
+    quoteShuffleRekey(s, count);
+  }
+  return index;
+}
+
 // Feed bytes through a line counter. Call with each chunk; finish=true on EOF
 // flushes a trailing partial line. Returns how many eligible lines were seen
 // in this call (usually 0 or 1 per newline, more if the chunk has many).

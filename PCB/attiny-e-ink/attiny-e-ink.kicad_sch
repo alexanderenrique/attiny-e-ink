@@ -455,27 +455,29 @@
 			(on_board yes)
 			(in_pos_files yes)
 			(duplicate_pin_numbers_are_jumpers no)
-			(property "Reference" "J"
-				(at 0 2.54 0)
+			(property "Reference" "J3"
+				(at 1.27 0.0001 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left)
 				)
 			)
-			(property "Value" "Conn_01x02_Socket"
-				(at 0 -5.08 0)
+			(property "Value" "Battery"
+				(at 1.27 -2.5399 0)
 				(show_name no)
 				(do_not_autoplace no)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+					(justify left)
 				)
 			)
-			(property "Footprint" ""
+			(property "Footprint" "molex-90-1.25:CONN02_530480210_MOL"
 				(at 0 0 0)
 				(show_name no)
 				(do_not_autoplace no)
@@ -590,9 +592,9 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 0 0)
+					(at -5.08 -2.54 0)
 					(length 3.81)
-					(name "Pin_1"
+					(name "Pin_2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -608,9 +610,9 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 -2.54 0)
+					(at -5.08 0 0)
 					(length 3.81)
-					(name "Pin_2"
+					(name "Pin_1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -7075,7 +7077,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Connector:Alex_2pin_35thou"
+		(property "Footprint" "molex-90-1.25:CONN02_530480210_MOL"
 			(at 194.31 69.85 0)
 			(hide yes)
 			(show_name no)

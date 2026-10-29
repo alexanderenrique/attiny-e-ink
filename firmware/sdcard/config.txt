@@ -4,5 +4,5 @@ interval=7
 # A file in quotes/, or * for every .txt in that folder
 deck=*.txt
 
-# sequential or random
+# sequential, or random (one full shuffled pass, then a new order)
 order=random

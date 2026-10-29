@@ -86,6 +86,143 @@ void test_quote_split_author(void) {
   TEST_ASSERT_EQUAL_STRING("", author);
 }
 
+static void assertShufflePass(uint16_t count, uint32_t mix, uint16_t* first,
+                              uint16_t* second) {
+  QuoteShuffleState state;
+  quoteShuffleBegin(&state, count, mix);
+  TEST_ASSERT_TRUE(quoteShuffleStrideOk(state.stride, count));
+  if (count > 4) {
+    TEST_ASSERT_GREATER_THAN_UINT16(1, state.stride);
+    TEST_ASSERT_LESS_THAN_UINT16(static_cast<uint16_t>(count - 1U), state.stride);
+  }
+  const uint16_t start = state.start;
+  const uint16_t stride = state.stride;
+
+  for (uint16_t i = 0; i < count; ++i) {
+    const uint16_t index = quoteShuffleTake(&state, count);
+    TEST_ASSERT_LESS_THAN_UINT16(count, index);
+    first[index] += 1;
+  }
+  for (uint16_t i = 0; i < count; ++i) {
+    TEST_ASSERT_EQUAL_UINT16(1, first[i]);
+  }
+  TEST_ASSERT_EQUAL_UINT16(0, state.cursor);
+  TEST_ASSERT_TRUE(quoteShuffleStrideOk(state.stride, count));
+  if (count > 4) {
+    TEST_ASSERT_GREATER_THAN_UINT16(1, state.stride);
+    TEST_ASSERT_LESS_THAN_UINT16(static_cast<uint16_t>(count - 1U), state.stride);
+  }
+
+  if (count <= 1) {
+    return;
+  }
+  if (count == 2) {
+    TEST_ASSERT_NOT_EQUAL(start, state.start);
+  } else {
+    TEST_ASSERT_NOT_EQUAL(stride, state.stride);
+  }
+
+  for (uint16_t i = 0; i < count; ++i) {
+    const uint16_t index = quoteShuffleTake(&state, count);
+    TEST_ASSERT_LESS_THAN_UINT16(count, index);
+    second[index] += 1;
+  }
+  for (uint16_t i = 0; i < count; ++i) {
+    TEST_ASSERT_EQUAL_UINT16(1, second[i]);
+  }
+}
+
+void test_shuffle_pass_visits_each_line_once(void) {
+  uint16_t seen[1042];
+  uint16_t seenAgain[1042];
+  const uint16_t counts[] = {1, 2, 3, 4, 400, 922, 1042};
+  const uint32_t mix = 0x1234ABCDUL;
+  for (uint16_t count : counts) {
+    memset(seen, 0, sizeof(seen));
+    memset(seenAgain, 0, sizeof(seenAgain));
+    assertShufflePass(count, mix, seen, seenAgain);
+  }
+}
+
+void test_shuffle_second_pass_is_a_different_order(void) {
+  const uint16_t count = 400;
+  QuoteShuffleState state;
+  quoteShuffleBegin(&state, count, 0xC0FFEUL);
+  uint16_t first[400];
+  for (uint16_t i = 0; i < count; ++i) {
+    first[i] = quoteShuffleTake(&state, count);
+  }
+  bool differ = false;
+  for (uint16_t i = 0; i < count; ++i) {
+    if (quoteShuffleTake(&state, count) != first[i]) {
+      differ = true;
+      break;
+    }
+  }
+  TEST_ASSERT_TRUE(differ);
+}
+
+void test_shuffle_resumes_from_saved_cursor(void) {
+  QuoteShuffleState state;
+  quoteShuffleBegin(&state, 50, 99);
+  (void)quoteShuffleTake(&state, 50);
+  const QuoteShuffleState saved = state;
+  const uint16_t expected = quoteShuffleTake(&state, 50);
+
+  QuoteShuffleState resumed = saved;
+  TEST_ASSERT_EQUAL_UINT16(expected, quoteShuffleTake(&resumed, 50));
+  TEST_ASSERT_EQUAL_UINT16(state.cursor, resumed.cursor);
+  TEST_ASSERT_EQUAL_UINT16(state.start, resumed.start);
+  TEST_ASSERT_EQUAL_UINT16(state.stride, resumed.stride);
+}
+
+void test_shuffle_repairs_a_stride_that_cannot_cover_the_deck(void) {
+  QuoteShuffleState state;
+  state.cursor = 3;
+  state.start = 1;
+  state.stride = 2;  // shares a factor with 400, so half the lines would be missed
+  const uint16_t index = quoteShuffleTake(&state, 400);
+  TEST_ASSERT_LESS_THAN_UINT16(400, index);
+  TEST_ASSERT_TRUE(quoteShuffleStrideOk(state.stride, 400));
+  TEST_ASSERT_EQUAL_UINT16(1, state.cursor);
+}
+
+void test_shuffle_avoids_walking_the_file_in_order(void) {
+  // Five lines have wider coprime steps than 1 (file order) and 4 (reverse).
+  TEST_ASSERT_EQUAL_UINT16(2, quoteCoprimeStride(5, 1));
+  TEST_ASSERT_EQUAL_UINT16(2, quoteCoprimeStride(5, 4));
+  QuoteShuffleState state;
+  quoteShuffleBegin(&state, 5, 431);
+  TEST_ASSERT_TRUE(state.stride > 1);
+  TEST_ASSERT_TRUE(state.stride < 4);
+  TEST_ASSERT_TRUE(quoteShuffleStrideOk(state.stride, 5));
+
+  // Four lines: the only coprimes are 1 and 3, so file order stays legal.
+  TEST_ASSERT_EQUAL_UINT16(1, quoteCoprimeStride(4, 1));
+  TEST_ASSERT_TRUE(quoteShuffleStrideOk(quoteCoprimeStride(4, 2), 4));
+}
+
+void test_shuffle_six_lines_uses_the_only_full_steps(void) {
+  // Six lines: the only coprime strides are 1 and 5.
+  TEST_ASSERT_EQUAL_UINT16(1, quoteCoprimeStride(6, 1));
+  TEST_ASSERT_EQUAL_UINT16(5, quoteCoprimeStride(6, 2));
+  QuoteShuffleState state;
+  quoteShuffleBegin(&state, 6, 1);
+  const uint16_t firstStride = state.stride;
+  TEST_ASSERT_TRUE(firstStride == 1 || firstStride == 5);
+  uint16_t seen[6] = {};
+  for (uint16_t i = 0; i < 6; ++i) {
+    const uint16_t index = quoteShuffleTake(&state, 6);
+    TEST_ASSERT_LESS_THAN_UINT16(6, index);
+    seen[index] += 1;
+  }
+  for (uint16_t i = 0; i < 6; ++i) {
+    TEST_ASSERT_EQUAL_UINT16(1, seen[i]);
+  }
+  TEST_ASSERT_NOT_EQUAL(firstStride, state.stride);
+  TEST_ASSERT_TRUE(state.stride == 1 || state.stride == 5);
+}
+
 void test_sequential_wrap(void) {
   uint16_t next = 0;
   TEST_ASSERT_EQUAL_UINT16(0, quoteNextSequentialIndex(0, 3, &next));
@@ -437,6 +574,12 @@ int main(void) {
   RUN_TEST(test_quote_deck_file_name);
   RUN_TEST(test_quote_line_skippable);
   RUN_TEST(test_quote_split_author);
+  RUN_TEST(test_shuffle_pass_visits_each_line_once);
+  RUN_TEST(test_shuffle_second_pass_is_a_different_order);
+  RUN_TEST(test_shuffle_resumes_from_saved_cursor);
+  RUN_TEST(test_shuffle_repairs_a_stride_that_cannot_cover_the_deck);
+  RUN_TEST(test_shuffle_avoids_walking_the_file_in_order);
+  RUN_TEST(test_shuffle_six_lines_uses_the_only_full_steps);
   RUN_TEST(test_sequential_wrap);
   RUN_TEST(test_battery_curve_endpoints);
   RUN_TEST(test_battery_curve_ui_estimate);

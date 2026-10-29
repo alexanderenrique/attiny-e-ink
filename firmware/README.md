@@ -32,7 +32,7 @@ order=sequential
 |-----|--------|
 | `interval` | Hours between refreshes, 1–18 (approx.; internal OSCULP32K / PIT) |
 | `deck` | Filename in `quotes/`, or `*` for every `.txt` |
-| `order` | `sequential` or `random` |
+| `order` | `sequential`, or `random` (one shuffled pass, remembered in EEPROM; see below) |
 
 ### Quote files
 
@@ -60,6 +60,20 @@ The title is the red line. The quote is black FreeSerif, and wraps to at most fo
 The only true wisdom is in knowing you know nothing. | Socrates
 We suffer more in imagination than in reality.
 ```
+
+### Random order
+
+`order=random` shows each eligible line once per pass, then starts a new order. The place in that pass is stored in EEPROM, so a reset or brown-out continues where it left off instead of replaying the deck from the top. Power-Down between wakes already keeps SRAM. This board's fuses set EESAVE, so a reflash keeps the EEPROM record too.
+
+The saved fields are a cursor (`nextIndex`), a start, and a stride:
+
+```text
+index = (shuffleStart + nextIndex * shuffleStride) % lineCount
+```
+
+The stride shares no factors with the line count, so as the cursor runs from 0 through `lineCount - 1` the formula hits every line once. When the cursor wraps, start and stride both move and are saved. For two lines the only legal stride is 1, so the start flips and the pair swaps. A stride of 1 (file order) or `lineCount - 1` (reverse file order) is used only when no other step can reach every line. That is decks of 1, 2, 3, 4, or 6 lines. Editing the deck, or anything that changes its size, starts a new first pass. That first pass is chosen from the deck's byte size, so the same file starts the same way until the pass finishes.
+
+The EEPROM magic is `QDK2`. A `QDK1` record from the previous generator is discarded, and the first boot of this firmware starts a fresh pass. That generator kept its state in SRAM and never advanced the saved cursor, so every power cycle played the same quotes in the same order, and it could skip lines. This shuffle does not roll with replacement, and it does not turn the ADC on. The battery divider stays off except for the existing voltage check.
 
 ## Build / flash
 

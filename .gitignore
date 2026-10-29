@@ -45,6 +45,15 @@ _autosave-*
 *-save.pro
 *-save.kicad_pcb
 
+# Fact aggregator downloads (regenerate with fact-aggregator/fetch_facts.py)
+fact-aggregator/raw/
+
+# LLM review decisions (regenerate with fact-aggregator/review_facts.py)
+fact-aggregator/review-cache/
+
+# LLM category assignments (regenerate with fact-aggregator/categorize_facts.py)
+fact-aggregator/category-cache/
+
 # Fabrication plots and generated exports (regenerate from the KiCad board)
 *.gbr
 *.drl

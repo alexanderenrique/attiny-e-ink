@@ -1,0 +1,658 @@
+#Technology Facts
+The average person`s left hand does 56% of the typing.
+A standard slinky measures 87 feet when stretched out.
+The average person's left hand does 56% of the typing.
+Annual growth of internet traffic is 314,000%
+The average lead pencil will draw a line 35 miles long or write approximately 50,000 English words.
+Elwood Edwards did the voice for the AOL sound files (i.e. “You’ve got Mail!”).
+The "pound" key on your keyboard (#) is called an octotroph.
+More than 50% of the people in the world have never made or received a telephone call.
+The microwave was invented after a researcher walked by a radar tube and a chocolate bar melted in his pocket.
+The amount of computer Memory required to run WordPerfect for Win95 is 8 times the amount needed aboard the space shuttle.
+The buzz from an electric razor in America plays in the key of B flat; Key of G in England.
+For every 'normal' webpage, there are five porn pages.
+The “save” icon in Microsoft Office programs shows a floppy disk with the shutter on backwards.
+IBM’s motto is “Think”. Apple later made their motto “Think different”.
+The serial number of the first MAC ever produced was 2001.
+The "save" icon on Microsoft Word shows a floppy disk with the shutter on backwards.
+The US has more personal computers than the next 7 countries combined.
+Simplistic passwords contribute to over 80% of all computer password break-ins.
+Bullet proof vests, fire escapes, windshield wipers, and laser printers were all invented by women
+People photocopying their buttocks are the cause of 23% of all photocopier faults worldwide.
+%60 of all people using the Internet, use it for pornography.
+The toothbrush was invented in China in 1498.
+A 2" X 4" is really 1-1/2" by 3-1/2".
+The average person spends about two years on the phone in a lifetime.
+The Automated Teller Machine (ATM) was introduced in England in 1965.
+The first computer bug was an actual bug
+SHA-1 was broken in 2017 by Google and CWI Amsterdam, who produced two different PDF files with the same hash
+Eve Online's Trinity patch in 2007 accidentally deleted the Windows boot.ini file from users' computers
+The Year 2038 problem will occur when Unix 32-bit signed integer timestamps overflow
+MD5 was declared 'cryptographically broken and unsuitable for further use' in 2008
+An MD5 collision can now be found in less than one second on a regular computer
+Ronald Rivest designed MD5 in 1991 specifically to replace MD4 after weaknesses were found
+The one-time pad is the only mathematically proven unbreakable encryption
+DES encryption was broken by the Electronic Frontier Foundation in 1997 using a $250,000 custom machine that cracked messages in 56 hours
+Shor's algorithm (1994) can factor large integers exponentially faster than classical computers
+A 2020 study found that cosmic rays can cause quantum computers to decohere within milliseconds
+Grover's algorithm provides only quadratic speedup for searching
+Richard Feynman proposed quantum computers in 1982, suggesting that simulating quantum physics requires quantum hardware
+Quantum key distribution allows perfectly secure communication
+At least 3 million physical qubits would be needed to factor a 2,048-bit integer in 5 months
+A 2023 Nature article summarized that quantum computers are currently 'good for absolutely nothing' in real-world applications
+The first high-level programming language was Plankalkül, created by Konrad Zuse between 1942-1945
+Ada Lovelace wrote the first computer program in 1843 — an algorithm for Charles Babbage's Analytical Engine to calculate Bernoulli numbers.
+FORTRAN (1957) was the first widely-used high-level language
+Grace Hopper developed FLOW-MATIC (1955-1959) because business data processing customers were uncomfortable with mathematical notation
+Niklaus Wirth walked out of the ALGOL 68 design committee because it was too complex, creating the simpler Pascal language instead.
+JavaScript was created by Brendan Eich in just 10 days in May 1995
+The C programming language (1972) was developed by Dennis Ritchie and Ken Thompson specifically to rewrite Unix
+LISP (1958) introduced garbage collection, recursive functions, and tree data structures
+The term 'object-oriented programming' comes from Simula (1967), created by Nygaard and Dahl
+Backus-Naur Form (BNF), the notation for describing programming language syntax, was invented for ALGOL 60
+Python includes Tcl in its distribution to support GUI programming through Tkinter
+The field of AI research was officially founded at the Dartmouth Workshop in 1956
+ELIZA (1966) was the first chatbot
+The perceptron (1958) could learn to classify patterns, but Minsky and Papert's 1969 book showed it couldn't learn XOR
+The first AI winter (1974-1980) began when promised results failed to materialize
+The Logic Theorist (1955) proved 38 of the first 52 theorems in Russell and Whitehead's Principia Mathematica
+MIT's Project MAC received $2.2 million from ARPA in 1963 for AI research
+The transformer architecture, introduced in 2017, enabled the current AI boom — leading to large language models like GPT and ChatGPT.
+The first message sent over ARPANET was 'LO' on October 29, 1969
+The Internet transmitted only 1% of telecommunicated information in 1993, but 51% by 2000, and over 97% by 2007
+Donald Davies coined the term 'packet switching' in 1965 at Britain's National Physical Laboratory
+TCP/IP was installed on ARPANET in January 1983 after the DoD made it standard for all military networking
+Tim Berners-Lee invented the World Wide Web at CERN in 1989-90
+The NSFNET backbone was decommissioned in 1995, removing the last restrictions on commercial Internet traffic
+CompuServe became the first service to offer commercial email to personal computer users in 1979
+J.C.R. Licklider envisioned the 'Intergalactic Computer Network' in 1963
+RFC 1, 'Host Software,' was written by Steve Crocker on April 7, 1969
+The first international ARPANET connections were made in 1973 to Norway and the UK
+The Space Shuttle software achieved zero defects across 500,000 lines of code — one of the most reliable software systems ever created.
+A 'Heisenbug' is a bug that disappears or changes behavior when you try to debug it
+Linus's law states 'given enough eyeballs, all bugs are shallow'
+The median software project spends 17-20% of development effort on bug fixing, according to studies from 1978 and 2020.
+Integer factorization is believed to be NP-intermediate — neither in P nor NP-complete, which is why RSA encryption works.
+The DAO hack in 2016 exploited a recursive call vulnerability to steal 3.6 million Ether (~$50 million)
+The Debian OpenSSL bug (2006-2008) made random number generation predictable, compromising every key generated over 2 years
+Heartbleed (2012-2014) was an OpenSSL vulnerability that removed confidentiality from HTTPS
+Apple's 'goto fail' bug was caused by a duplicated line of code that made SSL certificate checks always pass
+In 2020, a specific Android wallpaper could brick phones by causing a bootloop
+AT&T's long-distance network crashed on January 15, 1990 due to a cascading failure
+In January 2009, Google's search engine marked every website worldwide as potentially malicious — including its own homepage.
+NASA's Spirit rover became unresponsive on Mars in 2004 because too many files accumulated in flash memory
+Israel's Beresheet lunar lander crashed in 2019 due to a software bug that disabled the main engine
+The Mars Pathfinder mission (1997) nearly failed due to priority inversion
+Hash tables can provide O(1) average-case lookup time
+B-trees are the standard data structure for database indexing
+A trie (prefix tree) can find all words starting with a given prefix in O(k) time where k is the prefix length
+Linked lists allow O(1) insertion and deletion but require O(n) for random access — the opposite tradeoff of arrays.
+The stack data structure follows LIFO (Last In, First Out) while queues follow FIFO (First In, First Out)
+AVL trees maintain balance by ensuring the heights of left and right subtrees differ by at most 1
+Git uses SHA-1 hashes not for security but for data integrity
+SHA-0 was withdrawn by the NSA shortly after publication in 1993 due to an undisclosed flaw
+All major web browsers stopped accepting SHA-1 SSL certificates in 2017 after the SHAttered collision attack was published.
+Microsoft discontinued SHA-1 code signing for Windows Update on August 3, 2020 — effectively ending updates for Windows 2000 through Vista.
+A chosen-prefix SHA-1 collision attack now costs about $45,000 in cloud computing
+In 2008, researchers used a PlayStation 3 cluster to create a rogue CA certificate by exploiting MD5 collisions
+The US Cyber Command embedded an MD5 hash of their mission statement into their official emblem in 2009
+The first network to implement packet switching was the NPL network in Britain in early 1969 — months before ARPANET's first message.
+The end-to-end principle
+Vint Cerf and Bob Kahn published their TCP/IP design in May 1974
+ARPANET initially had only 4 nodes by December 1969: UCLA, Stanford, UC Santa Barbara, and the University of Utah
+By 1981, ARPANET had grown to only 213 hosts — far smaller than the modern Internet's billions of devices.
+Alan Turing's 1936 paper 'On Computable Numbers' introduced the Turing machine concept
+The term 'halting problem' was first used by Martin Davis in 1952 — though Turing's 1936 proof predates the terminology.
+A computer with a million parts, each with two states, has at least 2^1,000,000 possible states
+Walter Pitts and Warren McCulloch described artificial neurons in 1943
+Christopher Strachey wrote a checkers program in 1951 on the Ferranti Mark 1 — one of the first game-playing programs ever written.
+Herbert Simon declared in 1965 that 'machines will be capable, within twenty years, of doing any work a man can do'
+Backpropagation was unknown to AI researchers until the 1980s
+The 'blocks world' paradigm
+Rust was designed to prevent memory corruption bugs that plague C and C++
+Carbon is Google's experimental successor to C++, announced in 2022
+Mojo (2023) aims to be a Python superset that's as fast as C
+LLVM, created by Chris Lattner, is now used in the implementation of many modern languages including Rust, Swift, and Julia.
+TypeScript, created by Microsoft in 2012, adds static typing to JavaScript
+Go was created at Google by Ken Thompson (co-creator of Unix and C's predecessor B) and Rob Pike
+Paul Benioff introduced the quantum Turing machine in 1980 — the first application of quantum mechanics to computational problems.
+The RSA algorithm was conceived after a Passover dinner in April 1977
+An 829-bit RSA key was factored in 2020, requiring 2,700 CPU-years of computation
+A 512-bit RSA key can now be factored on a desktop computer in about 73 days
+Unix was created at Bell Labs by Ken Thompson and Dennis Ritchie starting in 1969
+The entire original Unix distribution fit on a single magnetic tape and occupied less than 10 MB
+Unix was rewritten in C in 1973, making it the first portable operating system
+By the late 1990s, Unix and Unix-like systems ran on over 90% of the world's top 500 fastest supercomputers.
+The first Unix source license was sold for just $150 to universities
+In 2026, a magnetic tape containing Version 4 Unix (1973) was discovered at the University of Utah and successfully recovered
+Deep Blue was the first computer to defeat a reigning world chess champion in a match
+Deep Blue could evaluate 200 million chess positions per second using 480 custom VLSI 'chess chips' running alongside 30 PowerPC processors.
+A bug in Deep Blue's code caused it to make a random move during the first game against Kasparov
+IBM renamed 'Deep Thought' to 'Deep Blue' because the original name too closely resembled the pornographic film 'Deep Throat.'
+After defeating Kasparov, IBM dismantled Deep Blue and refused his request for a rematch
+Kasparov initially called Deep Blue an 'alien opponent' but later belittled it, stating it was 'as intelligent as your alarm clock.'
+Edward Fredkin created a $100,000 prize in 1980 for the first computer to beat a world chess champion
+AlphaGo became the first computer program to beat a professional Go player without handicap in October 2015
+Most experts thought AlphaGo-level AI was at least five years away
+Lee Sedol's 'divine move' in game 4 against AlphaGo exploited a bug
+Go has a branching factor of about 250 (vs chess's 35), making traditional search approaches infeasible
+Bubble sort was analyzed as early as 1956, making it one of the oldest sorting algorithms formally studied
+Betty Holberton, who worked on ENIAC and UNIVAC, was among the authors of early sorting algorithms around 1951.
+Timsort, the widely used sorting algorithm in Python and Java, was only invented in 2002
+Comparison sorting algorithms cannot do better than O(n log n) on average — this is mathematically proven, not just an empirical limit.
+Sorting small arrays optimally (fewest comparisons and swaps) remains an open research problem
+Radix sort can sort n numbers with k digits in O(n·k) time
+Bogosort has unbounded worst-case runtime
+Diffie-Hellman key exchange, published in 1976, was the first practical public-key protocol
+The Logjam attack (2015) showed that cracking 1024-bit Diffie-Hellman would cost about $100 million
+The supersingular isogeny key exchange, designed to be quantum-resistant, was broken in July 2022
+Much of the Internet's traffic used one of a handful of 1024-bit Diffie-Hellman groups
+The Y2K bug existed because memory cost up to $100 per kilobyte in the 1970s
+On January 1, 2000, police breathalyzers in Hong Kong failed at midnight, and taxi meters in Jiangsu, China stopped working.
+In Denmark, the first baby born on January 1, 2000, was recorded as being 100 years old due to a Y2K bug.
+Microsoft Exchange Server had a 'Y2K22' bug
+Moore's Law was first articulated by Gordon Moore in 1965
+In 1975, Moore revised his prediction to doubling every two years — this version held true for nearly 50 years.
+Moore's Law is not a law of physics but a self-fulfilling prophecy
+Moore's second law (Rock's law) states that the cost of a semiconductor fabrication plant doubles every four years.
+Moore himself said in 2006: 'Moore's law is a violation of Murphy's law. Everything gets better and better.'
+By 2025, commercially available processors exceeded 92 billion transistors — seven orders of magnitude more than the IC era began with.
+In 2022, Nvidia CEO Jensen Huang declared Moore's Law dead, while Intel CEO Pat Gelsinger disagreed — the debate continues.
+Dennard scaling predicted that as transistors shrank, power density stayed constant
+In May 2021, IBM announced a 2nm chip with parts smaller than human DNA — 50 billion transistors on a fingernail-sized chip.
+A 1982 Osborne Executive computer had 100x the weight, 500x the volume, and 1/100th the clock speed of a 2007 iPhone
+Linus Torvalds wanted to call Linux 'Freax' (free + freak + x)
+Linux runs on all 500 of the world's fastest supercomputers — it gradually displaced all competitors by November 2017.
+Torvalds said if GNU Hurd or 386BSD had been available in 1991, he probably wouldn't have created Linux.
+Linux powers over 96.4% of the top one million web servers, SpaceX rockets, Tesla cars, and the Mars Ingenuity helicopter.
+Linux was first released on September 17, 1991
+Eric Raymond noted that Linux 'evolved in a completely different way'
+ANSI C is technically not Turing complete because pointer sizes are accessible
+Bitcoin mining represented 0.5% of global electricity consumption as of 2025
+Tim Berners-Lee invented the World Wide Web at CERN in 1989
+The first web server ran on a NeXT computer at CERN
+CERN released the web protocol and code royalty-free on April 30, 1993
+The WWW beat Gopher partly because the University of Minnesota announced licensing fees for Gopher in February 1993
+The www prefix became standard practice by accident
+Internet Explorer dominated browsers for 14 years by being bundled with Windows — Microsoft's response to Netscape sparked the browser wars.
+The W3C tried to replace HTML with stricter XHTML, but Mozilla, Opera, and Apple rejected it
+Hyperlinks on the web can become 'dead' over time (link rot)
+A universal Turing machine can simulate any other Turing machine
+All individual components of bitcoin existed in earlier academic literature
+Nakamoto's Bitcoin paper was not peer-reviewed and was initially ignored by academics who argued it couldn't work
+Linux is ported to more platforms than any other operating system — from 8-bit microcontrollers to the world's largest supercomputers.
+Combined with Android (which is Linux-based), Linux has the largest installed base of all general-purpose operating systems as of 2022.
+The GNU project, started by Richard Stallman in 1983, created compilers, editors, and utilities for a free Unix
+Linux was adopted first by supercomputing centers in the mid-1990s
+In his 1936 paper, Turing proved the Entscheidungsproblem (decision problem) is undecidable
+Turing's paper 'On Computable Numbers' was the first to describe a computer that could be programmed to perform any task
+IEEE 754 floating point was created in 1985 to address the chaos of incompatible floating-point formats
+IEEE 754 defines 'Not a Number' (NaN) as the result of undefined operations like 0/0 or sqrt(-1)
+IEEE 754 has both positive zero and negative zero
+A double-precision (64-bit) float can represent numbers from 10^-308 to 10^308
+0.1 + 0.2 ≠ 0.3 in IEEE 754 floating point
+Subnormal numbers in IEEE 754 fill the gap between zero and the smallest normal number — preventing sudden 'flush to zero' underflow.
+The discrete cosine transform (DCT), invented in 1974, is the foundation for JPEG, MP3, and most video codecs
+Huffman coding, invented in 1952, was David Huffman's term paper at MIT
+LZW compression, used in GIF images and PKZIP, was so effective that Unisys tried to enforce patent royalties in 1994
+Lossless audio compression (like FLAC) typically achieves 50-60% compression
+JPEG compression exploits human vision
+DeepMind's Chinchilla 70B language model outperformed PNG for image compression and FLAC for audio
+According to AIXI theory, the best compression of data is the smallest program that generates it
+MP3 uses psychoacoustic masking — sounds that are inaudible because louder nearby sounds mask them are simply removed to save space.
+The Morris Worm of 1988, the first major Internet worm, exploited a buffer overflow in the fingerd service
+Buffer overflows were publicly documented as a security threat in a 1972 Computer Security Technology Planning Study
+C and C++ are vulnerable to buffer overflows because they provide no built-in bounds checking
+NOP sleds are sequences of no-operation instructions used in buffer overflow exploits
+Address Space Layout Randomization (ASLR) makes buffer overflow exploitation harder by randomizing where code and data are loaded in memory.
+Stack canaries detect buffer overflows by placing a random value before the return address
+The gets() function in C has no way to limit input size
+Return-oriented programming (ROP) chains together existing code snippets to bypass non-executable memory protections
+The term 'open source' was coined in 1998 at a strategy session following Netscape's announcement to release Navigator's source code.
+After Huawei was banned from using Google's Android in 2019, China developed HarmonyOS
+The term 'bit' (binary digit) was first used by Claude Shannon in his 1948 paper
+Von Neumann architecture, used by nearly all modern computers, stores both programs and data in the same memory — introduced in 1945.
+The ENIAC (1945) used 17,468 vacuum tubes, weighed 30 tons, and consumed 150 kilowatts
+Dijkstra's algorithm (1956) finds the shortest path in a graph
+The fast Fourier transform (FFT), rediscovered by Cooley and Tukey in 1965, reduced spectral analysis from O(n²) to O(n log n)
+The binary search algorithm was first published in 1946 but the first correct implementation wasn't published until 1962
+Jon Bentley found that 90% of professional programmers couldn't correctly implement binary search
+Java's Arrays.binarySearch had a subtle integer overflow bug for 9 years (1997-2006)
+The 'Billion Dollar Mistake' is Tony Hoare's name for inventing null references in 1965
+The CAP theorem (2000) proves distributed systems can only guarantee 2 of 3 properties: Consistency, Availability, and Partition tolerance.
+MapReduce, published by Google in 2004, enabled processing of massive datasets across clusters
+Google's PageRank algorithm, which revolutionized web search, was described in a 1998 paper
+The term 'cloud computing' gained popularity around 2006 when Amazon launched EC2
+Docker containers, released in 2013, use Linux kernel features (cgroups and namespaces) that existed since 2008
+Git was created by Linus Torvalds in 2005 after BitKeeper revoked Linux's free license
+The first version control system was SCCS (1972) at Bell Labs
+Stack Overflow launched in 2008 and quickly became the de facto Q&A site for programmers
+GitHub, founded in 2008 and acquired by Microsoft for $7.5 billion in 2018, hosts over 100 million repositories.
+The term 'software engineering' was coined at a 1968 NATO conference
+Fred Brooks' 'The Mythical Man-Month' (1975) observed that adding programmers to a late project makes it later
+The waterfall model of software development, often criticized today, was first described by Winston Royce in 1970
+Agile software development emerged from the 2001 Manifesto for Agile Software Development
+Test-driven development (TDD) was rediscovered by Kent Beck in 2003
+The SQL language was developed at IBM in the early 1970s
+NoSQL databases emerged in the late 2000s to handle web-scale data
+Redis, created in 2009, keeps all data in memory for sub-millisecond latency — its name comes from 'REmote DIctionary Server.'
+MongoDB's name comes from 'humongous' — it was designed at 10gen (now MongoDB Inc.) in 2007 to handle large-scale web applications.
+The attention mechanism, key to modern transformers like GPT, was introduced in 2014
+GPT-3 has 175 billion parameters and cost an estimated $4.6 million just for the compute to train
+Batch normalization (2015) allowed training of much deeper networks by normalizing layer inputs
+ResNet (2015) introduced skip connections that allow training of networks with 152+ layers
+NVIDIA's CUDA, released in 2007, enabled GPUs to be used for general-purpose computing
+TPUs (Tensor Processing Units), custom chips designed by Google for machine learning, can perform 92 trillion operations per second.
+LSTM networks (1997) solved the problem of learning long-term dependencies
+Goodfellow came up with GANs during a discussion at a bar
+Stable Diffusion (2022) can generate images from text descriptions and runs on consumer GPUs
+ChatGPT reached 100 million users in just 2 months after launch in November 2022
+Reinforcement Learning from Human Feedback (RLHF) was key to making ChatGPT helpful and safe
+Word2Vec (2013) showed that word meanings could be represented as vectors where 'king
+BERT (2018) revolutionized NLP by pre-training on massive text corpora
+The 'scaling laws' for neural networks suggest performance improves predictably with more data, parameters, and compute
+Emergent abilities in large language models appear suddenly at certain scales
+Prompt engineering became a valued skill in 2022-2023
+Few-shot learning lets models learn new tasks from just a handful of examples
+Self-attention in transformers has O(n²) complexity with sequence length
+DNS was invented in 1983 by Paul Mockapetris
+The largest DDoS attack recorded exceeded 3.47 Tbps in 2022 — equivalent to streaming about 2 million HD movies simultaneously.
+IPv4's 4.3 billion addresses (2^32) seemed inexhaustible in 1983
+BGP (Border Gateway Protocol), which routes all Internet traffic between networks, has no built-in security
+The 1988 Morris worm cost an estimated $10-100 million in damages
+SSL/TLS, the encryption behind HTTPS, was created by Netscape in 1994
+Let's Encrypt, launched in 2016, provides free TLS certificates and has issued over 3 billion certificates — democratizing web encryption.
+Tor (The Onion Router) was originally developed by the US Naval Research Laboratory
+The speed of light limits Internet latency
+HTTP was created by Tim Berners-Lee in 1989 as a simple text-based protocol
+Whitespace is a programming language where only spaces, tabs, and newlines are significant — all other characters are ignored as comments.
+Brainfuck, created in 1993, has only 8 commands and was designed to challenge and amuse programmers — yet it's Turing complete.
+INTERCAL, the 'Compiler Language With No Pronounceable Acronym' (1972), was designed to be as unlike any other language as possible
+PHP originally stood for 'Personal Home Page' — creator Rasmus Lerdorf built it to track visits to his online resume in 1993.
+Perl was called 'the duct tape of the Internet' in the 1990s
+Ruby's creator Yukihiro Matsumoto wanted a language 'more powerful than Perl, and more object-oriented than Python'
+Python was named after Monty Python, not the snake
+Java's 'Write once, run anywhere' slogan became a reality through the JVM
+Java was originally called Oak, after a tree outside James Gosling's office
+Swift was developed in secret at Apple for 4 years before being announced in 2014
+Kotlin, named after an island near St. Petersburg, became an official Android development language in 2017
+Windows 3.1 sold over 3 million copies in its first 2 months (1992)
+Windows 95's launch was a cultural event
+Windows XP remained in use at ATMs, medical devices, and government systems for years after support ended in 2014
+macOS is based on Darwin, a Unix-like system — this is why Mac terminals feel familiar to Linux users.
+Steve Jobs bought NeXT, then Apple acquired NeXT in 1996
+Android's original mascot was designed by Irina Blok in 2007 — the green robot's design was inspired by bathroom symbols.
+Android version names were alphabetically ordered desserts from Cupcake (1.5) to Pie (9.0)
+ChromeOS boots in about 8 seconds and auto-updates
+The Apple M1 chip (2020) marked Apple's transition from Intel to custom ARM processors
+ARM processors power 95% of smartphones — their low power consumption made mobile computing practical.
+The Intel 4004, the first commercial microprocessor (1971), had 2,300 transistors and ran at 740 kHz
+Hard drives store data magnetically on spinning platters
+SSDs have no moving parts and can read data 100x faster than HDDs
+RAM loses all data when power is removed (volatile memory) — this is why you lose unsaved work when your computer crashes.
+CPU cache is 100x faster than main memory
+Spectre and Meltdown (2018) exploited CPU speculative execution
+The 'von Neumann bottleneck' refers to the limited speed between CPU and memory
+Edgar Codd invented the relational database model at IBM in 1970 — IBM initially ignored his work, and Oracle implemented it first.
+Oracle was founded in 1977 to build the first commercial SQL database
+MySQL's name comes from co-founder Michael Widenius's daughter My — his other daughter Maria inspired MariaDB, the MySQL fork.
+PostgreSQL, originally called POSTGRES, has been in development since 1986 at UC Berkeley
+SQLite is the most deployed database engine in the world — it's embedded in every smartphone, browser, and countless applications.
+ACID (Atomicity, Consistency, Isolation, Durability) properties guarantee reliable database transactions
+Amazon DynamoDB, Google's Bigtable, and Facebook's Cassandra pioneered web-scale databases
+The SQL injection attack was first publicly demonstrated in 1998
+Kevin Mitnick was once the FBI's most wanted hacker
+Stuxnet (2010) was the first known cyberweapon to cause physical damage
+The WannaCry ransomware (2017) affected 200,000 computers in 150 countries
+The SolarWinds hack (2020) compromised 18,000 organizations including US government agencies
+Log4Shell (2021) was called 'the single biggest, most critical vulnerability of the last decade'
+The Equifax breach (2017) exposed personal data of 147 million people
+Two-factor authentication reduces account compromise by 99% — yet adoption remains low because users find it inconvenient.
+Bcrypt, designed in 1999, intentionally makes password hashing slow — this makes brute-force attacks impractical even with modern hardware.
+The traveling salesman problem (TSP) is NP-hard — finding the optimal route visiting all cities exactly once has exponential complexity.
+Bloom filters can tell you if an element is 'probably in the set' or 'definitely not'
+Consistent hashing, invented in 1997, distributes data across servers so that adding/removing servers minimizes data movement
+Greedy algorithms make locally optimal choices at each step — they're simple but don't always find the global optimum.
+Dynamic programming, named by Richard Bellman in the 1950s, solves problems by breaking them into overlapping subproblems
+Knuth-Morris-Pratt (1977) finds patterns in text in O(n) time by never backtracking
+The A* algorithm (1968) finds optimal paths in graphs — it's used in game pathfinding, GPS navigation, and robotic motion planning.
+Monte Carlo Tree Search, used by AlphaGo, explores game trees by random simulation
+Unicode now includes over 149,000 characters covering 161 scripts — including emoji, which were added in 2010.
+The ASCII code for 'A' is 65 and 'a' is 97
+Base64 encoding increases data size by 33% — it's used to embed binary data in text formats like email and JSON.
+JSON was 'discovered' by Douglas Crockford around 2001
+XML was designed to be human-readable and machine-readable — but its verbosity led developers to prefer JSON for most web APIs.
+YAML's name originally stood for 'Yet Another Markup Language'
+LaTeX, created by Leslie Lamport in 1983, is the standard for typesetting scientific papers
+Donald Knuth started writing 'The Art of Computer Programming' in 1962
+Knuth offers $2.56 for each error found in his books — the checks are rarely cashed because they're considered collector's items.
+The IEEE and ACM Turing Award is considered the 'Nobel Prize of Computing'
+Dijkstra wrote 'GOTO Considered Harmful' in 1968 — starting a tradition of 'X Considered Harmful' papers that continues today.
+Dijkstra famously said 'Computer science is no more about computers than astronomy is about telescopes.'
+Rule 110, a simple one-dimensional cellular automaton, was proven Turing complete in 2004
+Formal verification can mathematically prove software is correct
+Automated theorem provers have since proven or verified many important results
+The Internet Archive's Wayback Machine has archived over 835 billion web pages since 1996 — preserving the history of the ephemeral web.
+The Rosetta Code wiki documents solutions to programming tasks in hundreds of languages
+Code golf is competitive programming where the shortest source code wins
+The International Obfuscated C Code Contest (IOCCC) has celebrated creative abuse of the C language since 1984
+Quines are programs that output their own source code without reading themselves — they exist in virtually every programming language.
+Ken Thompson demonstrated a compiler backdoor in his 1984 Turing Award lecture
+The 'Trusting Trust' attack showed that you must trust your entire toolchain
+Debian has been reproduced bit-for-bit from source code — reproducible builds prevent supply chain attacks by making binaries verifiable.
+WebAssembly (2017) lets languages like C++, Rust, and Go run in web browsers at near-native speed — breaking JavaScript's browser monopoly.
+Electron lets developers build desktop apps with web technologies
+React Native and Flutter enable building mobile apps for iOS and Android from a single codebase — write once, deploy everywhere (mostly).
+The term 'serverless' is a misnomer
+Infrastructure as Code (IaC) treats server configuration as software
+DevOps emerged around 2008 to break down silos between development and operations — combining cultural practices with automation tools.
+Netflix's Chaos Monkey randomly terminates servers in production
+The 'Twelve-Factor App' methodology (2011) defined best practices for building cloud-native applications
+Microservices architecture breaks applications into small, independent services
+GraphQL, developed by Facebook in 2012 and open-sourced in 2015, lets clients request exactly the data they need
+gRPC uses Protocol Buffers for fast, efficient communication between services — often 10x faster than JSON-based REST APIs.
+Kafka, originally developed at LinkedIn, processes trillions of messages per day at scale — it's named after the author Franz Kafka.
+Event sourcing stores all changes as a sequence of events rather than current state
+CQRS (Command Query Responsibility Segregation) separates read and write models
+The actor model, introduced in 1973, treats concurrent computation as message-passing between actors — implemented in Erlang and Akka.
+Erlang was designed by Ericsson for telephone switches requiring 99.9999999% uptime — it can hot-swap code without stopping the system.
+WhatsApp handled 450 million users with just 32 engineers — enabled by Erlang's concurrency model designed for telecom-grade reliability.
+Elixir (2011) runs on the Erlang VM but with Ruby-like syntax — making Erlang's power accessible to a wider audience.
+Haskell, named after logician Haskell Curry, is the most well-known purely functional language
+Monads in Haskell allow sequencing computations in a pure language
+Clojure (2007) is a modern Lisp running on the JVM — designed by Rich Hickey who spent 2.5 years developing it unpaid.
+Scala combines functional and object-oriented programming on the JVM — it's used for big data processing with Apache Spark.
+F# brings functional programming to .NET — developed by Don Syme at Microsoft Research, it influenced features later added to C#.
+Julia was designed for scientific computing with C-like speed and Python-like usability
+Zig aims to be a better C
+Nim compiles to C, C++, or JavaScript — offering Python-like syntax with C-like performance and metaprogramming via macros.
+V is a programming language that claims C-like performance with Zig-like safety
+The first computer password was created at MIT in 1961 for the CTSS time-sharing system
+The Raspberry Pi, launched in 2012 for $35, was designed to promote computing education — over 40 million have been sold.
+Arduino, an open-source microcontroller platform from 2005, made electronics accessible to artists and hobbyists
+RISC-V is an open-source CPU instruction set — unlike x86 and ARM, anyone can implement it without licensing fees.
+The FizzBuzz test asks programmers to print 'Fizz' for multiples of 3, 'Buzz' for 5, and 'FizzBuzz' for both
+The rubber duck debugging technique involves explaining code line-by-line to an inanimate object
+Pair programming has two developers work at one computer — studies show it produces fewer bugs despite appearing less efficient.
+Technical debt, coined by Ward Cunningham in 1992, describes the cost of shortcuts in software
+The 'bus factor' measures how many team members could be hit by a bus before a project fails
+Yak shaving describes the chain of prerequisites before you can do what you actually wanted
+Hofstadter's Law states: 'It always takes longer than you expect, even when you take into account Hofstadter's Law.'
+Conway's Law states that organizations design systems mirroring their communication structure — software architecture reflects org charts.
+Hyrum's Law: with enough users, someone depends on every observable behavior of your system — making any change potentially breaking.
+Zawinski's Law: every program attempts to expand until it can read email — those that cannot are replaced by ones that can.
+The 'worse is better' philosophy argues that simpler systems often win over more correct ones — Unix beat more elegant alternatives.
+The 90-90 rule: the first 90% of code takes 90% of time; the remaining 10% takes the other 90% of time.
+Postel's Law (the robustness principle): be conservative in what you send, liberal in what you accept
+The first spam email was sent in 1978 to 393 ARPANET users
+CAPTCHA was coined in 2003 at Carnegie Mellon
+reCAPTCHA was originally used to digitize books — users unknowingly transcribed words that OCR couldn't read while proving they were human.
+The first webcam (1991) monitored a coffee pot at Cambridge University
+The first YouTube video, 'Me at the zoo,' was uploaded on April 23, 2005
+The first tweet was posted by Jack Dorsey on March 21, 2006: 'just setting up my twttr'
+Facebook started as 'TheFacebook' in 2004, restricted to Harvard students — Zuckerberg coded the first version in his dorm room.
+Amazon was originally called 'Cadabra'
+Google's first server was built from Lego bricks
+Google's name comes from 'googol' (10^100) — the misspelling stuck when they registered the domain.
+Steve Jobs chose the Apple logo's rainbow stripes to highlight the Apple II's color display capability
+Microsoft's first product was a BASIC interpreter for the Altair 8800 in 1975
+Bill Gates' 1976 'Open Letter to Hobbyists' criticized software piracy — establishing software as a commercial product, not freely shared.
+IBM chose Microsoft's DOS for the PC partly because Digital Research's CEO was allegedly out flying when IBM called
+The mouse was invented by Douglas Engelbart in 1964 — but didn't become mainstream until the Macintosh 20 years later.
+Engelbart's 1968 'Mother of All Demos' showed the mouse, hypertext, video conferencing, and collaborative editing
+Xerox PARC invented the GUI, Ethernet, laser printing, and WYSIWYG editing — but Xerox failed to commercialize most of its innovations.
+The QWERTY keyboard layout was designed in 1873 for typewriters
+The Dvorak keyboard layout (1936) was designed for efficiency — studies show mixed results on whether it's actually faster than QWERTY.
+Touch typing on physical keyboards remains faster than phone keyboards for most people — but the gap is narrowing with younger users.
+Vim (1991) and Emacs (1976) are text editors with passionate user bases
+Visual Studio Code, released by Microsoft in 2015, became the most popular code editor — it's built on Electron and open source.
+JetBrains IDEs (IntelliJ, PyCharm, etc.) were created in Prague — their refactoring and code analysis tools set industry standards.
+GitHub Copilot (2021) uses AI to suggest code as you type
+Semantic versioning (SemVer) uses MAJOR.MINOR.PATCH — MAJOR for breaking changes, MINOR for new features, PATCH for bug fixes.
+The software development industry loses $312 billion annually to poor code quality, according to a 2020 study.
+Code review catches 60% of defects on average — making it one of the most effective quality assurance practices.
+The Nakamoto consensus used by Bitcoin solves the Byzantine Generals Problem through proof-of-work
+MEV (Maximal Extractable Value) in blockchain creates game-theoretic extraction opportunities
+Soulbound tokens are non-transferable digital credentials
+Rice cookers work by detecting when all water has been absorbed—the temperature rises above 100°C when water is gone, triggering the switch.
+Microwaves heat food unevenly because they create standing waves with hot and cold spots—turntables help distribute heating more evenly.
+The CODIS DNA profiling system uses 20 core loci (genetic locations), allowing match probabilities of 1 in a quintillion (10^18) or more.
+Mobile phones must be placed in a Faraday shield during seizure to prevent remote wiping or alteration of evidence through radio signals.
+Machine translation has improved dramatically with neural networks — but still struggles with idioms, context, and ambiguity.
+Google Translate now supports over 130 languages — but quality varies enormously between well-resourced and low-resource languages.
+Large language models like GPT can generate fluent text but don't 'understand' language the way humans do
+The Turing test for AI was originally a language test — whether a machine could fool humans in conversation.
+Computational linguistics combines computer science and linguistics — powering everything from spell-check to virtual assistants.
+In 2006, the first imperfect invisibility cloak was demonstrated using gradient-index metamaterials at microwave frequencies.
+An 80-gram carbon nanotube aerogel could theoretically cover the wings of a jumbo jet to provide continuous anti-icing heating at low power.
+Piezoelectric igniters generate sparks for gas grills and lighters by compressing a ceramic disc—no battery or external power needed.
+Quantum dots are used in QLED TVs to produce purer, more vibrant colors than traditional LED displays while being more energy efficient.
+PEDOT:PSS is a conductive polymer that can be printed like ink, enabling flexible displays, solar cells, and electronic textiles.
+Bismuth telluride is the most commonly used thermoelectric material, found in portable coolers and car seat heaters/coolers.
+Transparent ceramics like spinel (MgAl₂O₄) are used for armor windows, being lighter and harder than bulletproof glass.
+Beryllium is 30% lighter than aluminum but 6 times stiffer, used in aerospace and the James Webb Space Telescope's mirrors.
+Indium tin oxide (ITO) is the most widely used transparent conductor, found in virtually all touchscreens and LCD displays.
+The first multitrack tape recorder was invented by musician Les Paul in the late 1940s, ushering in a revolution in recording technology.
+Robert Moog, inventor of the famous Moog synthesizer, began his career building theremins in high school in the 1950s.
+The compact disc was introduced in 1982, effectively relegating vinyl records to a niche market by the mid-1990s.
+The MP3 format uses psychoacoustic principles, removing sounds humans can't perceive to compress audio files by 90% or more.
+The most sophisticated supercomputer in 2010 performed 83 times slower than a cat's brain at processing information.
+YouTube's first-ever video, uploaded April 23, 2005, featured elephants at a zoo
+The new electrode works with realistic exhaust gases rather than requiring purified CO2.
+Researchers showed that internal “mumbling,” combined with short-term memory, helps AI adapt to new tasks, switch goals, and handle ...
+Scientists Use AI to Crack the Code of Nature’s Most Complex Patterns 1,000x Faster Jan.
+Wearable sleep trackers and smartphone apps can collect data about movement, sounds, and heart rate during sleep.
+Titanium has an exceptional strength-to-weight ratio and is used in aircraft, spacecraft, and medical implants.
+Semi Joseph Begun was discovered by steel tape recorder.
+Curt Stille was discovered by steel tape recorder.
+Leroy Cronin was discovered by ChemPU.
+Ludwig Blattner was discovered by steel tape recorder.
+Justin Picard was discovered by Copy detection pattern.
+Brad Cox was discovered by Objective-C.
+Carl Malamud was discovered by internet radio.
+Marius Boel was discovered by inventor.
+Valerie Hunter Gordon was discovered by inventor.
+Hermann Bach was discovered by sewage treatment.
+Allen Erwin Gant was discovered by pantyhose.
+Ethel Boone Gant was discovered by pantyhose.
+Alexander Falk was discovered by XMLSpy.
+Alphons Adolph was discovered by view card.
+Klaus Volkamer was discovered by patent inventor.
+Takashi Teranishi was discovered by Tera Term.
+When the E-Defense earthquake shake table was commissioned in 2005, it was the world's largest 3D earthquake shake table.
+The release of the top-level domain .zip was condemned by cyber-security experts.
+The world's oldest timepiece with an anchor escapement is in the collection of the Irish Museum of Time.
+The Australian Light Weight Air Warning Radar was once loaded using canoes and later manhandled up a 200-foot cliff.
+Shortly after it was completed, the Tokamak de Fontenay-aux-Roses burned a hole through itself in a plasma disruption.
+Doc Edgerton created a stroboscope that he used to take high-speed photographs of bullets being shot, insects flying, and drops of liquid.
+The Advanced Tactical Fighter program resulted in the F-22 Raptor.
+The Free Universal Construction Kit connects ten otherwise incompatible children's construction toys.
+The Epson MX-80 was the best-selling dot-matrix printer during its market lifespan.
+hydrogen) without the type of radioactive waste that fission energy currently produces.
+Unsolved Problems in Nanotechnology: Chemical Processing by Self-Assembly
+1380–1429), Persia/Iran – plate of conjunctions, analog planetary computer Andrew Kay (1919–2014), U.S.
+Swan's first successful electric light bulb and Edison's electric light bulb were both patented in 1879.
+Borůvka's algorithm, an algorithm for finding a minimum spanning tree in a graph, was first published in 1926 by Otakar Borůvka.
+Electroluminescence in silicon carbide, now known as the LED, was discovered independently by Oleg Losev in 1927 and by H.J.
+Similar approaches, also aiming to cover the concept of universal computing, were introduced by S.C.
+The Cocke–Younger–Kasami algorithm was independently discovered three times: by T.
+The Wagner–Fischer algorithm, in computer science, was discovered and published at least six times.
+Now, they’ve shown that their problems can be rewritten in the concrete language of algorithms.
+The first computer mouse was made of wood.
+The inventor of the typewriter also invented carbon paper.
+The inventor of the vacuum cleaner was inspired by hay fever.
+The inventor of the light bulb was afraid of the dark.
+The inventor of the zipper called it a clasp locker.
+The inventor of the electric chair was a dentist.
+The inventor of the diving suit was an artist.
+The inventor of the can opener invented it 48 years late.
+The inventor of the chainsaw was a doctor.
+The inventor of the bulldozer was an accountant.
+The inventor of the ballpoint pen was a journalist.
+The inventor of the barcode was inspired by Morse code.
+The inventor of air conditioning was a printer.
+The inventor of the microscope was Dutch.
+The inventor of the telescope was also Dutch.
+The inventor of the compass was Chinese.
+The inventor of paper was also Chinese.
+The inventor of the safety pin was American.
+The inventor of the pencil eraser was English.
+The inventor of the paperclip is disputed.
+The inventor of the stapler was American.
+The inventor of the rubber band was English.
+The inventor of the push-pin was an architect.
+The inventor of the binder clip was American.
+The inventor of the sticky note was at 3M.
+The inventor of the highlighter was Japanese.
+The inventor of the marker was American.
+The Antikythera mechanism, found in a 2,000-year-old shipwreck, is an ancient analog computer that predicted astronomical positions.
+The first computer programmer was Ada Lovelace, a woman, in the 1840s — over 100 years before modern computers.
+Nikola Tesla claimed to have invented a 'death ray' but destroyed the plans before he died.
+The first computer bug was an actual insect.
+The first product to have a barcode was Wrigley's gum.
+The first webcam was created to monitor a coffee pot.
+The inventor of the AK-47 regretted creating it.
+The inventor of the microwave got the idea from a melted chocolate bar.
+The QWERTY keyboard was designed to slow typists down so mechanical typewriters wouldn't jam.
+The first webcam was invented to monitor a coffee pot at Cambridge University so researchers wouldn't make wasted trips.
+The original iPhone had less computing power than today's cheap calculators, but it still revolutionized the smartphone industry.
+GPS satellites must account for both special and general relativity
+The 'Like' button on Facebook was almost called 'Awesome.'
+The moon landing computer had less processing power than a modern musical greeting card.
+Bubble wrap was originally intended to be used as wallpaper, not packaging material.
+Play-Doh was originally invented as a wallpaper cleaner before being repurposed as a children's toy.
+The chainsaw was originally invented to help with childbirth by cutting the pelvic bone during difficult deliveries.
+WD-40 got its name because it was the result of the 40th attempt at creating a Water Displacement formula.
+The microwave oven was invented by accident when a radar engineer noticed a chocolate bar in his pocket had melted.
+Velcro was invented after the creator noticed how burrs stuck to his dog's fur during a walk.
+Superglue was discovered accidentally twice — first in 1942 and again in 1951, both times while trying to make gun sights.
+The inventor of the fire hydrant is unknown because the patent office where his records were stored burned down.
+Smartphones have more computing power than all of NASA had in 1969 when it put men on the Moon.
+The first commercially successful ballpoint pen was developed by a Hungarian journalist because fountain pens kept smudging his work.
+The first vending machine was invented in ancient Egypt to dispense holy water in temples.
+The can opener was invented 48 years after the can because early cans came with instructions to use a hammer and chisel.
+The first computers used vacuum tubes — ENIAC used 17,468 tubes and filled an entire room.
+Post-it Notes were invented by accident when a scientist at 3M was trying to create a super-strong adhesive.
+The slinky was invented by accident when a naval engineer dropped a tension spring and watched it walk down shelves.
+The first programmable computer was designed in 1837 by Charles Babbage but was never built in his lifetime.
+The inventor of the shopping cart initially hired fake shoppers to use them because customers thought they looked silly.
+The first 1GB hard drive, introduced in 1980, weighed 550 pounds and cost $40,000.
+The first text message ever sent was 'Merry Christmas' in 1992.
+The first domain ever registered was Symbolics.com on March 15, 1985.
+The inventor of the Ethernet received only a small bonus from his company, which made billions from the technology.
+Nintendo's Game Boy survived a bombing in the Gulf War and still works
+The first website ever created is still online: info.cern.ch.
+The first YouTube video was uploaded on April 23, 2005.
+Email existed before the World Wide Web.
+The QWERTY keyboard was designed to slow typists down to prevent typewriter jams.
+Google's name comes from 'googol' — the number 1 followed by 100 zeros.
+The first webcam watched a coffee pot at Cambridge University.
+The first text message said 'Merry Christmas.'
+The inventor of the web, Tim Berners-Lee, made it royalty-free for everyone.
+The inventor of the intermittent windshield wiper won $30 million from Ford for patent infringement.
+The inventor of the Super Soaker was a NASA engineer.
+Bubble wrap was originally invented to be wallpaper.
+Vending machines kill more people annually than sharks.
+The first iPhone had less processing power than today's musical greeting cards.
+The Apollo 11 computer had less power than a modern calculator.
+The first commercial computer weighed 27 tons and cost $500,000.
+GPS satellites must account for Einstein's relativity or they'd be 10 km off daily.
+The first 1GB hard drive weighed 550 pounds and cost $40,000.
+WiFi was invented by an Australian radio astronomer.
+The first domain name ever registered was Symbolics.com in 1985.
+More people own cell phones than toothbrushes.
+The first alarm clock could only ring at 4 AM.
+The inventor of the microwave oven noticed the candy bar in his pocket melted while working on radar.
+The original name for a search engine was 'BackRub' — before Google.
+The first computer virus was created in 1986 and was called 'Brain.'
+The first email was sent in 1971 — the message was 'QWERTYUIOP.'
+GPS satellites must account for relativity or they'd be off by about 10 km per day.
+In binary, all numbers are represented using only 0s and 1s — the entire internet runs on this system.
+Hexadecimal uses 16 digits (0-9 and A-F) and is commonly used in computing for colors and memory addresses.
+The world's first computer programmer was a woman named Ada Lovelace.
+The first computer virus was called 'Creeper.'
+The inventor of the microwave noticed his candy bar melted.
+Vending machines kill more people than sharks annually.
+A single Google search uses 1,000 computers in 0.2 seconds.
+The plastic in Lego bricks is so precisely manufactured that bricks from 1958 still interlock perfectly with bricks made today.
+Memory foam was invented by NASA to cushion astronauts during launch and reentry.
+The first webcam watched a coffee pot.
+The inventor of the World Wide Web made it royalty-free.
+The inventor of matches made them after lighters.
+The inventor of post-its discovered them by accident.
+The inventor of Velcro was inspired by burrs.
+A jiffy is an actual unit of time - it's 1/100th of a second in computing.
+The first computer bug was an actual bug - a moth found in the Harvard Mark II computer in 1947.
+The first computer programmer was Ada Lovelace, who wrote algorithms for Charles Babbage's Analytical Engine in the 1840s.
+The speed of a computer mouse is measured in Mickeys - named after Mickey Mouse.
+The Twitter bird has an official name - Larry, after basketball player Larry Bird.
+The inventor of the microwave received only $2 for his discovery.
+The Twitter bird has a name - Larry Bird, named after the basketball player.
+The first webcam was created at Cambridge University to monitor a coffee pot.
+A jiffy is an actual unit of time equal to 1/60th of a second in electronics.
+The first email was sent by Ray Tomlinson to himself in 1971.
+The speed of a computer mouse is measured in Mickeys per second.
+The first SMS text message was sent in 1992 and said 'Merry Christmas'.
+The first computer virus was created in 1983 and was called 'Elk Cloner'.
+The first 3D printed organ was a bladder, created in 1999.
+The first message sent over ARPANET (the precursor to the internet) was 'LO' - the system crashed before 'LOGIN' could be completed.
+The first domain name ever registered was Symbolics.com on March 15, 1985.
+The average person spends about 2 years of their life on phone calls.
+The world's first programmable computer was the Z3, built by Konrad Zuse in 1941.
+The first robot was created in 1954 by George Devol.
+The first smartphone was IBM's Simon Personal Communicator, released in 1994.
+The first email spam was sent in 1978 to 393 ARPANET users.
+The first website went live on August 6, 1991, created by Tim Berners-Lee.
+The first mobile phone call was made on April 3, 1973, by Martin Cooper.
+The first video uploaded to YouTube was 'Me at the zoo' on April 23, 2005.
+The first color photograph was taken in 1861 by James Clerk Maxwell.
+The first MP3 player was created in 1997 by SaeHan Information Systems.
+The first commercial text message was sent in 1992, reading 'Merry Christmas'.
+The first nuclear power plant to generate electricity was EBR-I in Idaho, in 1951.
+The first computer hard drive was created in 1956 and weighed over a ton.
+The first computer mouse was made of wood, invented by Doug Engelbart in 1964.
+The first fax machine was invented in 1843, before the telephone.
+The first refrigerator was invented in 1913 by Fred W. Wolf.
+The first vending machine was invented in 1883 and dispensed postcards.
+The first escalator was installed in 1897 at a Coney Island amusement park.
+The first digital camera was invented by Kodak engineer Steven Sasson in 1975.
+The first modern zipper was invented in 1913 by Gideon Sundback.
+The first working laser was built in 1960 by Theodore Maiman.
+The first microwave oven was called the 'Radarange' and cost $5,000 in 1946.
+The first battery was invented by Alessandro Volta in 1800.
+The first transistor was invented at Bell Labs in 1947.
+The first mechanical calculator was invented by Blaise Pascal in 1642.
+The first telegraph message was sent by Samuel Morse in 1844: 'What hath God wrought'.
+The first underwater photograph was taken in 1856 by William Thompson.
+The first air-conditioned building was the New York Stock Exchange in 1903.
+The first image transmitted over the internet was a picture of Les Horribles Cernettes in 1992.
+The first public radio broadcast occurred in 1906.
+The first telephone directory was published in 1878 and had only 50 names.
+The first solar cell was developed in 1954 at Bell Labs.
+The first self-contained underwater breathing apparatus (SCUBA) was invented in 1943.
+The first jet engine was patented by Frank Whittle in 1930.
+The first barcode was scanned on a pack of Wrigley's gum in 1974.
+The 'smart ship' USS Yorktown was left dead in the water for nearly 3 hours in September 1997 after a divide-by-zero error.
+Before the electric telegraph in 1835, weather reports could travel only 60-160 km daily, making forecasting impossible.
+The first computerized weather forecast was performed in 1950 by a team including John von Neumann using the ENIAC computer.
+The world's first televised weather forecasts were experimentally broadcast by the BBC in November 1936.
+Klara Dan von Neumann was one of the ENIAC programmers who helped produce the first computerized weather forecast in 1950.
+Phage display technology won the 2018 Nobel Prize in Chemistry, using viruses to evolve new antibodies and drugs.
+CRISPR was discovered as a bacterial immune system before becoming a gene-editing tool — bacteria had it first.
+Synthetic biology created the first cell with an entirely artificial genome in 2010 — life made from scratch.
+Scientists created a minimal cell with only 473 genes in 2016 — the simplest self-replicating life form ever made.
+E. coli has been engineered to produce insulin since 1978 — the first commercial use of genetic engineering.
+Bacteria can be programmed to glow in the presence of explosives, arsenic, or disease markers — living biosensors.
+Engineered bacteria can produce biofuels, plastics, and pharmaceuticals — living chemical factories.
+Oxford Nanopore sequencing can identify pathogens in real time — diagnosis at the bedside.
+Giorgina Reid patented a technique for stabilizing banks and preventing coastal erosion.
+CRISPR can edit genes with high precision.
+Cas9 is the enzyme that cuts DNA in CRISPR.
+Guide RNA directs CRISPR to the target gene.
+PCR amplifies DNA exponentially.
+DNA sequencing has become 100 million times cheaper.
+Sanger sequencing reads one DNA strand at a time.
+Next-gen sequencing reads millions of strands at once.
+Oxford Nanopore can sequence DNA in real-time.
+23andMe uses DNA microarrays.
+The Firefox browser is named after the red panda, also called a firefox; Firefox confirms this.

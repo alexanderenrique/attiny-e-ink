@@ -1,0 +1,18 @@
+It contains Ursa Major and the Hyades star cluster, among others.
+# The referent of “It” is unclear.
+The star, whose mass is roughly half that of the Sun, is currently 62 light-years from the Solar System.
+# The star is not identified, so the fact is unclear on its own.
+Physical Properties of ~ 1000 Cool Stars from the SPOCS Catalog".
+# This is a title fragment, not a complete fact.
+Table 4 "The Census of Stars and Brown Dwarfs within 8 Parsecs of the Sun" in Bailer-Jones, C.
+# This is a table title and citation fragment.
+Rare ultramassive stars that exceed this limit
+# This is a sentence fragment.
+The lowest mass for which this effect is active is the Eddington limit.
+# “This effect” has no clear referent.
+Technically they are not stars, as they no longer generate heat and light via nuclear fusion in their cores.
+# The pronoun “they” has no clear referent when this line stands alone.
+The universe is expanding faster than the speed of light at its edges.
+# “At its edges” is unclear and misleading because the universe has no known edge.
+The farthest galaxy ever observed is GN-z11, at 13.4 billion light-years away.
+# GN-z11 is no longer the farthest observed galaxy, so this claim is outdated.

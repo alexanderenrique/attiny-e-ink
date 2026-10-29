@@ -15,6 +15,8 @@ void eepromStateLoad(EepromQuoteState* state) {
     state->fileSize = 0;
     state->lineCount = 0;
     state->nextIndex = 0;
+    state->shuffleStart = 0;
+    state->shuffleStride = 1;
     state->deckKey[0] = '\0';
   }
 }
