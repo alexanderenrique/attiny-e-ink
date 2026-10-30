@@ -1,6 +1,6 @@
 # Fact sources
 
-This folder collects short facts from public lists. It does not copy anything into `firmware/sdcard/quotes/`. Those files stay the curated card decks. After a fetch, copy a deck from `out/` onto the card by hand if you want the display to use it.
+This folder collects short facts from public lists. It does not copy anything into `firmware/sdcard/quotes/`. Those decks stay on the card and are not committed. After a fetch, copy a deck from `out/` onto the card by hand if you want the display to use it.
 
 A fact is kept only when it is **22 words or fewer** (the same cutoff as `firmware/scripts/split_long_quotes.py`) and **140 characters or fewer** (the length the e-ink layout can show). Questions are dropped, and so are headings of one or two words, lines that are still wiki markup, lines that start with a dash, and lines cut off on `and`, `or`, or `the`. A leading year label such as `1749:` is removed before that check. The same sentence is kept once, compared case-insensitively after whitespace is collapsed. When a longer science fact is written as `short fact - explanation`, the lead clause is kept if that clause itself fits and does not end on a comma, colon, or semicolon.
 

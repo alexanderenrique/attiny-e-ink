@@ -45,6 +45,10 @@ _autosave-*
 *-save.pro
 *-save.kicad_pcb
 
+# Quote decks for the card. Supply your own .txt files; they are not part of this repo.
+firmware/sdcard/quotes/
+firmware/sdcard/Long-Quotes/
+
 # Fact aggregator downloads (regenerate with fact-aggregator/fetch_facts.py)
 fact-aggregator/raw/
 

@@ -11,7 +11,7 @@ See [POWER.md](POWER.md) for the full pin/peripheral sleep audit and current-mea
 
 ## Card layout
 
-Format the card **FAT32** (Disk Utility “MS-DOS (FAT)”, ≤32 GB). Copy the contents of [`sdcard/`](sdcard/):
+Format the card **FAT32** (Disk Utility “MS-DOS (FAT)”, ≤32 GB). Copy [`sdcard/config.txt`](sdcard/config.txt) onto the card and add your own `.txt` decks under `quotes/`. Those decks are not in this repo.
 
 ```text
 config.txt
